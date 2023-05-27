@@ -1,6 +1,6 @@
 {
   "[html]": {
-    "editor.defaultFormatter": "Angular.ng-template"
+    "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[scss]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"

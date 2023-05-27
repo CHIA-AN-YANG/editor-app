@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import styles from './page.module.scss'
+import Image from 'next/image';
+import styles from './page.module.scss';
 
 export default function Home() {
   return (
@@ -26,20 +26,20 @@ export default function Home() {
         </div>
       </section>
       <section className={styles.center}>
-      <div className={styles.toolbar}>
-        <button>
-          <Image
-            src="/vercel.svg"
-            alt="Moving Tool"
-            className={styles.editingTool}
-            width={24}
-            height={24}
-          ></Image>
-        </button>
-      </div>
+        <div className={styles.toolbar}>
+          <button>
+            <Image
+              src="/vercel.svg"
+              alt="Moving Tool"
+              className={styles.editingTool}
+              width={24}
+              height={24}
+            ></Image>
+          </button>
+        </div>
         <div className={styles.editingArea}></div>
-        </section>
-        <section className={styles.panelRight}>
+      </section>
+      <section className={styles.panelRight}>
         <div className={styles.panelHead}>
           Component A
           [icon delete]
@@ -47,7 +47,7 @@ export default function Home() {
         <div className={styles.panelBody}>
           [componentTree]
         </div>
-        </section>
+      </section>
       {/* <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
@@ -135,5 +135,5 @@ export default function Home() {
         </a>
       </div> */}
     </main>
-  )
+  );
 }
