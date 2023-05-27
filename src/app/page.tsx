@@ -1,10 +1,54 @@
 import Image from 'next/image'
-import styles from './page.module.css'
+import styles from './page.module.scss'
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
+
+      <section className={styles.panelLeft}>
+        <div className={styles.panelHead}>
+          Landing Page A
+          [icon edit]
+          [icon plus]
+          [icon delete]
+        </div>
+        <div className={styles.panelBody}>
+          [pagelist]
+        </div>
+        <div className={styles.panelHr}>
+          [adjustable]
+        </div>
+        <div className={styles.panelHead}>
+          Components
+        </div>
+        <div className={styles.panelBody}>
+          [componentTree]
+        </div>
+      </section>
+      <section className={styles.center}>
+      <div className={styles.toolbar}>
+        <button>
+          <Image
+            src="/vercel.svg"
+            alt="Moving Tool"
+            className={styles.editingTool}
+            width={24}
+            height={24}
+          ></Image>
+        </button>
+      </div>
+        <div className={styles.editingArea}></div>
+        </section>
+        <section className={styles.panelRight}>
+        <div className={styles.panelHead}>
+          Component A
+          [icon delete]
+        </div>
+        <div className={styles.panelBody}>
+          [componentTree]
+        </div>
+        </section>
+      {/* <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>src/app/page.tsx</code>
@@ -89,7 +133,7 @@ export default function Home() {
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
-      </div>
+      </div> */}
     </main>
   )
 }
