@@ -10,14 +10,20 @@ import styles from "../styles/editor.module.scss";
 export default function PanelRight() {
   return (
     <section className={styles.panelRight}>
-    <div className={styles.panelHead}>
-      Component A
-      <BsPencil></BsPencil>
-      <BsFillTrash3Fill></BsFillTrash3Fill>
-    </div>
-    <div className={styles.panelBody}>
-      [componentTree]
-    </div>
-  </section>
+      
+      <div className={styles.panelHead}>
+        <div className={styles.panelHeadTitle}>
+          Landing Page A
+          <BsPencil></BsPencil>
+        </div>
+        <div className={styles.panelHeadBtn}>
+          <BsFillTrash3Fill></BsFillTrash3Fill>
+        </div>
+      </div>
+
+      <div className={styles.panelBody}>
+        [componentTree]
+      </div>
+    </section>
   )
 }

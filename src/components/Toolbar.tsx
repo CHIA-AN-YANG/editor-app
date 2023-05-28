@@ -8,6 +8,8 @@ export default function Toolbar() {
     <div className={styles.toolbar}>
       <button>
         <BsCursorFill></BsCursorFill>
+      </button>
+      <button>
         <BsCursorText></BsCursorText>
       </button>
     </div>)

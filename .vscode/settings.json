@@ -14,5 +14,6 @@
     "source.addMissingImports": true
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
   "editor.tabSize": 2,
 }
