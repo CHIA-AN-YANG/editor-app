@@ -1,0 +1,43 @@
+%panel {
+  width: 300px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 100vh;
+  background-color: lightgray;
+  .icon.expand{
+    display: none;
+  }
+  &.close{
+    width: 2px;
+    .icon.expand{
+      display: flex;
+    }
+  }
+}
+
+.panelLeft{
+  @extend %panel;
+  border-inline-end: 1px solid gray;
+}
+
+.panelRight{
+  @extend %panel;
+  border-inline-start: 1px solid gray;
+}
+
+.toolbar {
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: .5rem .8rem;
+
+}
+
+.center {
+  display: flex;
+  position: relative;
+  flex-grow: 1;
+
+}
