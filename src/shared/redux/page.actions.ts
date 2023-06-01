@@ -1,3 +1,7 @@
+import { FabricJSEditor } from '../custom-fabricjs-react-lib';
+import { SAVE_ELEMENTS } from './editElement.actions';
+import { Page, PageElement } from '../interfaces/page.interfaces';
+
 // Action types
 export const CREATE_PAGE = 'CREATE_PAGE';
 export const SELECT_PAGE = 'SELECT_PAGE';
@@ -5,14 +9,15 @@ export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const DELETE_PAGE = 'DELETE_PAGE';
 export const CHANGE_PAGE_NAME = 'CHANGE_PAGE_NAME';
 
+
 // Action interfaces
 interface CreatePageAction {
   type: typeof CREATE_PAGE;
-  payload: { id: string; name: string };
+  payload: Page;
 }
 interface SelectPageAction {
   type: typeof SELECT_PAGE;
-  payload: string;
+  payload: Page;
 }
 
 interface SelectElementAction {
@@ -30,6 +35,7 @@ interface ChangePageNameAction {
   payload: { id: string; newName: string };
 }
 
+
 // Action creators
 export const createPage = (): CreatePageAction => {
   const timestamp = Date.now().toString();
@@ -38,13 +44,13 @@ export const createPage = (): CreatePageAction => {
 
   return {
     type: CREATE_PAGE,
-    payload: { id: pageId, name: pageName }
+    payload: { id: pageId, name: pageName, elements: [] }
   };
 };
-export const selectPage = (pageId: string): SelectPageAction => {
+export const selectPage = (page: Page): SelectPageAction => {
   return {
     type: SELECT_PAGE,
-    payload: pageId
+    payload: page
   };
 };
 
@@ -66,4 +72,8 @@ export const changePageName = (id: string, newName: string): ChangePageNameActio
 });
 
 // Export action types
-export type ActionTypes = CreatePageAction | SelectPageAction | SelectElementAction | DeletePageAction | ChangePageNameAction;;
+export type PageActionTypes = CreatePageAction
+  | SelectPageAction
+  | SelectElementAction
+  | DeletePageAction
+  | ChangePageNameAction;

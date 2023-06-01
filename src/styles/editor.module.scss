@@ -40,6 +40,11 @@ $c-active: dodgerblue;
   opacity: 0.6;
 }
 
+.mutedText {
+  font-style: italic;
+  opacity: 0.6;
+}
+
 .panelHead {
   display: flex;
   justify-content: space-between;
@@ -94,14 +99,6 @@ $c-active: dodgerblue;
   }
 }
 
-.panelBody {
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem 2rem;
-}
-
 .panelRight{
   @extend %panel;
   border-inline-start: 1px solid $c-medium;
@@ -136,9 +133,32 @@ $c-active: dodgerblue;
   padding: 1rem;
 
 }
+.panelBody {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+.panelBodyTemp {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  padding: 1rem 0;
+  button {
+    appearance: none;
+    border: none;
+    outline: none;
+    color: $c-medium;
+    border-radius: var(--border-radius);
+    margin: 0 .2rem;
+    padding: .2rem .8rem;
+  }
+}
 
 .editingArea {
   height: calc(var(--editing-area-height) * var(--editing-area-scale));
   width: calc(var(--editing-area-width) * var(--editing-area-scale));
   border: 1px solid $c-medium;
+  box-sizing: content-box;
 }
