@@ -1,12 +1,13 @@
 $c-white: #FFF;
-$c-light:#E7E7E7;
+$c-light: #E7E7E7;
 $c-accent: #c4cdca;
 $c-medium: gray;
 $c-background: #e2e2e2;
-$c-active: dodgerblue;
+$c-active: rgb(141, 174, 207);
 
 
 %panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -14,17 +15,29 @@ $c-active: dodgerblue;
   flex-grow: 0;
   flex-shrink: 0;
   height: 100vh;
-  background-color: $c-background;
+  color: $c-white;
+  overflow: hidden;
+
   // TODO: RWD - close panel on pad view
-  .icon.expand{
+  .icon.expand {
     display: none;
   }
-  &.close{
+
+  &.close {
     width: 2px;
-    .icon.expand{
+
+    .icon.expand {
       display: flex;
     }
   }
+
+}
+
+@mixin editorBackground {
+
+  background: repeating-linear-gradient(45deg, #414368 0, #414368 0.8px, #e5e5f700 0, #959595 5px),#667275;
+  box-shadow: inset -25px 25px 50px #50595b,
+    inset 25px -25px 80px #51595b99;
 }
 
 .activeItem {
@@ -46,51 +59,62 @@ $c-active: dodgerblue;
 }
 
 .panelHead {
+  @include editorBackground;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1rem;
   background-color: $c-light;
   border-bottom: 1px solid $c-medium;
 }
+
 .panelHeadTitle {
   text-transform: uppercase;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
-  
-  svg{
+
+  svg {
     margin-left: .5rem;
   }
 }
-.panelHeadBtn{
+
+.panelHeadBtn {
   display: inline-flex;
   align-items: center;
-  svg{
+
+  svg {
     margin-inline-start: .5rem
   }
 }
 
-.panelLeft{
+.panelLeft {
   @extend %panel;
+  @include editorBackground;
+  border-top-right-radius: 20px;
   border-inline-end: 1px solid $c-medium;
-  .panelBody{
+
+  .panelBody {
     max-height: 50vh;
     overflow-y: scroll;
   }
+
   .pageThumbnailWrapper {
     display: flex;
     width: 100%;
     justify-content: flex-start;
     align-items: center;
     padding: 0.5rem 1rem;
+
     >p {
       margin-bottom: auto;
       margin-right: 1.2rem;
     }
-    >div>p{
+
+    >div>p {
       margin-bottom: .5rem;
     }
   }
+
   .emptyImage {
     width: 100px;
     height: 75px;
@@ -99,9 +123,88 @@ $c-active: dodgerblue;
   }
 }
 
-.panelRight{
+.panelRight {
   @extend %panel;
-  border-inline-start: 1px solid $c-medium;
+  @include editorBackground;
+  border-top-left-radius: 20px;
+
+  button {
+    display: flex;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin-inline: 1rem;
+    margin-top: 0.8rem;
+    text-transform: uppercase;
+    justify-content: center;
+    align-items: center;
+    background-color: #496868;
+    box-shadow: 5px 5px 0 0 #d4d4b3c4;
+    appearance: none;
+    outline: none;
+    border: none;
+    color: white;
+    opacity: 0.8;
+    transform: translate(-5px, -5px);
+    transition: all 0.2s linear;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:active {
+      box-shadow: 0 0 0 0 #d4d4b3c4;
+      transform: translate(0, 0);
+    }
+  }
+
+  input[type="number"] {
+    appearance: none;
+    outline: none;
+    padding: 0.2rem;
+    border: none;
+    border-radius: var(--border-radius);
+    width: 3rem;
+    margin-inline-end: .6rem;
+    text-align: center;
+    font-family: monospace;
+    background-color: var(--color-dime);
+  }
+
+  input[type="color"] {
+    appearance: none;
+    outline: none;
+    padding: 0;
+    border: none;
+    width: 80px;
+    background: transparent;
+  }
+}
+
+.panelBodyInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: .6rem;
+}
+
+.panelBodyInputFlexColumn {
+  @extend .panelBodyInput !optional;
+  flex-direction: column;
+
+  .panelBodyInputContent {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+  }
+}
+
+.panelBodyInputTitle {
+  text-transform: uppercase;
+  opacity: 0.6;
+  vertical-align: middle;
+  margin-inline-end: 1rem;
 }
 
 .toolbar {
@@ -111,12 +214,14 @@ $c-active: dodgerblue;
   background-color: gray;
   border-radius: 5px;
   padding: .5rem;
+
   button {
     margin: 0 .25rem;
     padding: .2rem;
     display: inline-flex;
     justify-content: center;
     align-items: center;
+
     &.active {
       background-color: $c-active;
     }
@@ -133,6 +238,7 @@ $c-active: dodgerblue;
   padding: 1rem;
 
 }
+
 .panelBody {
   display: flex;
   flex-grow: 1;
@@ -140,11 +246,13 @@ $c-active: dodgerblue;
   align-items: center;
   padding: 1rem 2rem;
 }
+
 .panelBodyTemp {
   display: flex;
   flex-direction: row;
   height: 50px;
   padding: 1rem 0;
+
   button {
     appearance: none;
     border: none;

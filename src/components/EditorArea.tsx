@@ -1,7 +1,7 @@
 import { editElement, saveElements } from '@store/editElement.actions';
 import { RootState } from '@store/store';
 import fabric from 'fabric';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFabricJSEditor, FabricJSCanvas, FabricJSEditor } from '../shared/custom-fabricjs-react-lib';
 import Toolbar from './Toolbar';
@@ -17,27 +17,34 @@ export default function EditorArea() {
   const {editor, onReady} = useFabricJSEditor();
   const selectedPage = useSelector((state: RootState) => state.selectedPage.page);
   const selectedElement = useSelector((state: RootState) => state.selectedPage.selectedElement);
+  const {fillColor, strokeColor, strokeWidth, opacity} = useSelector((state: RootState) => state.editingAttributes);
 
   useEffect(() => {
-    
-    if (!editor?.canvas || !fabric) {
-      return;
-    }
-
-    editor.canvas.setHeight(300);
+    if (editor?.canvas) {
+    editor.canvas.setHeight(500);
     editor.canvas.setWidth(600);
     editor.canvas.renderAll();
+    }
   }, [editor?.canvas.backgroundImage]);
 
+  useEffect(() => {
+    editor && (editor.canvas.freeDrawingBrush.color = fillColor);
+    editor && editor.setFillColor(fillColor);
+  }, [fillColor]);
 
   useEffect(() => {
-    if (!editor || !fabric) {
-      return;
-    }
-    editor.canvas.freeDrawingBrush.color = color;
-    editor.setStrokeColor(color);
-  }, [color]);
+    editor && editor.setStrokeColor(strokeColor);
+  }, [strokeColor]);
 
+  useEffect(() => {
+    editor && (editor.canvas.freeDrawingBrush.width = strokeWidth);
+  }, [strokeWidth]);
+
+  useEffect(() => {
+    editor && editor.setOpacity(opacity);
+  }, [opacity]);
+
+  // editing actions offered by fabricjs-react
   const addCircle = (editor?:FabricJSEditor) => {
     editor && editor.addCircle();
   };
@@ -57,6 +64,9 @@ export default function EditorArea() {
     editor.canvas.freeDrawingBrush.width === 12
       ? (editor.canvas.freeDrawingBrush.width = 5)
       : (editor.canvas.freeDrawingBrush.width = 12);
+  };
+  const deletElement = (editor?:FabricJSEditor) => {
+    editor?.canvas.getActiveObject() && editor.canvas.remove(editor.canvas.getActiveObject()!);
   };
   const undo = (editor?:FabricJSEditor) => {
     if (editor?.canvas && (editor.canvas._objects.length > 0)) {
@@ -91,6 +101,9 @@ export default function EditorArea() {
         case 'TOGGLE_SIZE':
           toggleSize();
           break;
+        case 'DELETE_ELEMENT':
+          deletElement(editor);
+          break;
         case 'UNDO':
           undo();
           break;
@@ -118,7 +131,6 @@ export default function EditorArea() {
           <button onClick={handleElementsSave}>
             Element save
           </button>
-
       </div>
 
       <div className={styles.editingArea}>

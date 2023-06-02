@@ -1,8 +1,7 @@
 
-import exp from 'constants';
-import { FabricJSEditor, FabricJSEditorHook, InitFabricJSEditorOptions, buildEditor, useFabricJSEditor } from '../custom-fabricjs-react-lib/editor';
+import { EditElementActionPayload } from '@interfaces/editElement.interfaces';
+import { FabricJSEditor, FabricJSEditorHook } from '../custom-fabricjs-react-lib/editor';
 import { PageElement } from '@interfaces/page.interfaces';
-import { CircleActionPayload, RectangleActionPayload, ChangeColorActionPayload, ChangeOpacityActionPayload, DeleteElementActionPayload, UndoActionPayload, ClearCanvasActionPayload, EditElementActionPayload } from '@interfaces/editElement.interfaces';
 
 // ActionTypes for canvas actions
 export const SAVE_ELEMENTS = 'SAVE_ELEMENTS';

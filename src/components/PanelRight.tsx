@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { selectPage } from '@store/page.actions';
 import { RootState } from '@store/store';
+import {  setFillColor, setOpacity, setStrokeColor } from '@store/editingAttributes.actions';
 
 enum EditorMode {
   EDIT = 'edit',
@@ -21,15 +22,26 @@ enum EditorMode {
 export default function PanelRight() {
 
   const dispatch = useDispatch();
-  const history = [] as Object[];
-  const [color, setColor] = useState("#35363a");
   const [mode, setMode] = useState(EditorMode.EDIT);
   const selectedElement = useSelector((state: RootState) => state.selectedPage.selectedElement);
-
+  const {fillColor, strokeColor, opacity} = useSelector((state: RootState) => state.editingAttributes);
 
   const handleElementsEdit = (payload: EditElementActionPayload) => {
     dispatch(editElement(payload));
-}
+  }
+
+  const handleFillColorChange = (newFillColor: string) => {
+    dispatch(setFillColor(newFillColor));
+  }
+
+  const handleStrokeColorChange = (newStrokeColor: string) => {
+    dispatch(setStrokeColor(newStrokeColor));
+  }
+
+  const handleOpacityChange = (newOpacity: number) => {
+    dispatch(setOpacity(newOpacity));
+  }
+
 
   const onAddCircle = () => {
     handleElementsEdit({
@@ -109,7 +121,39 @@ export default function PanelRight() {
       </div>
 
       <div className={styles.panelBody}>
-
+          <div className={styles.panelBodyInput}>
+            <div className={styles.panelBodyInputTitle}>
+              Fill Color
+            </div>
+            <div className={styles.panelBodyInputContent}>
+              <input type="color" value={fillColor} onChange={
+                (e) => handleFillColorChange(e.target.value)
+              }></input>
+            </div>
+          </div>
+          <div className={styles.panelBodyInput}>
+            <div className={styles.panelBodyInputTitle}>
+              Stroke Color
+            </div>
+            <div className={styles.panelBodyInputContent}>
+              <input type="color" value={strokeColor} onChange={
+                (e) => handleStrokeColorChange(e.target.value)
+              }></input>
+            </div>
+          </div>
+          <div className={styles.panelBodyInputFlexColumn}>
+            <div className={styles.panelBodyInputTitle}>
+              Opacity
+            </div>
+            <div className={styles.panelBodyInputContent}>
+              <input type="number" min="0" max="1" step="0.1" value={opacity} onChange={
+                (e) => handleOpacityChange(parseFloat(e.target.value))
+              }></input>
+              <input type="range" min="0" max="1" step="0.1" value={opacity} onChange={
+                (e) => handleOpacityChange(parseFloat(e.target.value))
+              }></input>
+            </div>
+          </div>
           <button onClick={onAddCircle}>Add circle</button>
 
           <button onClick={onAddRectangle}>
@@ -119,16 +163,16 @@ export default function PanelRight() {
             Add Text
           </button>
           <button onClick={toggleDraw}>
-            Toggle draw
+            Brush Tool
           </button>
           <button onClick={toggleSize}>
-            ToggleSize
+            Change Brush Size
           </button>
           <button onClick={undo}>
             Undo
           </button>
           <button onClick={deletElement}>
-            Delete Element
+            Delete Element(s)
           </button>
           <button onClick={clear}>
             Clear Canvase

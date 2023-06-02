@@ -1,5 +1,5 @@
 import { fabric } from 'fabric'
-import { CIRCLE, RECTANGLE, LINE, TEXT, FILL, STROKE } from './defaultShapes'
+import { CIRCLE, RECTANGLE, LINE, TEXT, FILL, STROKE, OPACITY } from './defaultShapes'
 import { useEffect, useState } from 'react'
 
 export interface FabricJSEditor {
@@ -12,20 +12,13 @@ export interface FabricJSEditor {
   deleteAll: () => void
   deleteSelected: () => void
   fillColor: string
-  strokeColor: string
+  strokeColor: string,
+  opacity: number,
   setFillColor: (color: string) => void
   setStrokeColor: (color: string) => void
+  setOpacity: (opacity: number) => void
   zoomIn: () => void
   zoomOut: () => void
-}
-
-export interface InitFabricJSEditorOptions {
-  canvas?: fabric.Canvas,
-  fillColor?: string,
-  strokeColor?: string,
-  _setFillColor?: (color: string) => void,
-  _setStrokeColor?: (color: string) => void,
-  scaleStep?: number
 }
 
 /**
@@ -35,8 +28,10 @@ const buildEditor = (
   canvas: fabric.Canvas,
   fillColor: string,
   strokeColor: string,
+  opacity: number,
   _setFillColor: (color: string) => void,
   _setStrokeColor: (color: string) => void,
+  _setOpacity: (opacity: number) => void,
   scaleStep: number
 ): FabricJSEditor => {
   return {
@@ -45,7 +40,8 @@ const buildEditor = (
       const object = new fabric.Circle({
         ...CIRCLE,
         fill: fillColor,
-        stroke: strokeColor
+        stroke: strokeColor,
+        opacity: opacity
       })
       canvas.add(object)
     },
@@ -53,20 +49,21 @@ const buildEditor = (
       const object = new fabric.Rect({
         ...RECTANGLE,
         fill: fillColor,
-        stroke: strokeColor
+        stroke: strokeColor,
+        opacity: opacity
       })
       canvas.add(object)
     },
     addLine: () => {
       const object = new fabric.Line(LINE.points, {
         ...LINE.options,
-        stroke: strokeColor
+        stroke: strokeColor,
       })
       canvas.add(object)
     },
     addText: (text: string) => {
       // use stroke in text fill, fill default is most of the time transparent
-      const object = new fabric.Textbox(text, { ...TEXT, fill: strokeColor })
+      const object = new fabric.Textbox(text, { ...TEXT, fill: strokeColor,opacity: opacity })
       object.set({ text: text })
       canvas.add(object)
     },
@@ -90,6 +87,7 @@ const buildEditor = (
     },
     fillColor,
     strokeColor,
+    opacity,
     setFillColor: (fill: string) => {
       _setFillColor(fill)
       canvas.getActiveObjects().forEach((object) => object.set({ fill }))
@@ -105,6 +103,11 @@ const buildEditor = (
         }
         object.set({ stroke })
       })
+      canvas.renderAll()
+    },
+    setOpacity: (opacity: number) => {
+      _setOpacity(opacity)
+      canvas.getActiveObjects().forEach((object) => object.set({ opacity }))
       canvas.renderAll()
     },
     zoomIn: () => {
@@ -130,6 +133,7 @@ interface FabricJSEditorHook extends FabricJSEditorState {
 interface FabricJSEditorHookProps {
   defaultFillColor?: string
   defaultStrokeColor?: string
+  defaultOpacity?: number
   scaleStep?: number
 }
 
@@ -137,11 +141,14 @@ const useFabricJSEditor = (
   props: FabricJSEditorHookProps = {}
 ): FabricJSEditorHook => {
   const scaleStep = props.scaleStep || 0.5
-  const { defaultFillColor, defaultStrokeColor } = props
+  const { defaultFillColor, defaultStrokeColor, defaultOpacity } = props
   const [canvas, setCanvas] = useState<null | fabric.Canvas>(null)
   const [fillColor, setFillColor] = useState<string>(defaultFillColor || FILL)
   const [strokeColor, setStrokeColor] = useState<string>(
     defaultStrokeColor || STROKE
+  )
+  const [opacity, setOpacity] = useState<number>(
+    defaultOpacity || OPACITY
   )
   const [selectedObjects, setSelectedObject] = useState<fabric.Object[]>([])
   useEffect(() => {
@@ -172,8 +179,10 @@ const useFabricJSEditor = (
           canvas,
           fillColor,
           strokeColor,
+          opacity,
           setFillColor,
           setStrokeColor,
+          setOpacity,
           scaleStep
         )
       : undefined

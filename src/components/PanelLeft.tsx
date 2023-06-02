@@ -83,8 +83,6 @@ export default function PanelLeft() {
         ))}
       </div>
 
-      <hr className={styles.panelHr} />
-
       <div className={styles.panelHead}>
         <div className={styles.panelHeadTitle}>
           Components

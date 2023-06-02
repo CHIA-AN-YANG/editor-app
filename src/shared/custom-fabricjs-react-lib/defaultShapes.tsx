@@ -1,5 +1,6 @@
-export const STROKE = '#000000'
-export const FILL = 'rgba(255, 255, 255, 0.0)'
+export const STROKE = 'salmon'
+export const FILL = 'lightblue'
+export const OPACITY = 1
 
 export const CIRCLE = {
   radius: 20,
