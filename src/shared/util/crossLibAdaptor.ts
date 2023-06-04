@@ -1,4 +1,4 @@
-import { PageElement } from '@interfaces/page.interfaces';
+import { PageElement } from '../redux/models/page.model';
 import { fabric } from 'fabric';
 
 const availableTypes = ['rect', 'circle', 'triangle', 'path', 'text'];

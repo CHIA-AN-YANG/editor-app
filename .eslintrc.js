@@ -2,16 +2,17 @@ module.exports = {
   root: true,
   ignorePatterns: ['projects/**/*', 'node_modules/*', 'dist/*'],
   env: { browser: true },
+  plugins: ['@typescript-eslint'],
+  extends: ['next', 'plugin:@typescript-eslint/recommended'],
   overrides: [
     {
-      files: ['*.tsx'],
+      files: ['*.tsx, *.ts'],
       parserOptions: {
         project: 'tsconfig.json',
         tsconfigRootDir: __dirname,
         sourceType: 'module',
-        ecmaVersion: es7,
+        ecmaVersion: 'es2020',
       },
-      extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
       rules: {
         quotes: [
           1,
@@ -37,6 +38,8 @@ module.exports = {
             ],
           },
         ],
+        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/no-explicit-any': 'error',
         'eol-last': ['error', 'always'],
         'max-len': ['warn', { code: 250 }],
         'no-empty': 1,

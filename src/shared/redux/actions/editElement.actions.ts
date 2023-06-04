@@ -1,7 +1,7 @@
 
-import { EditElementActionPayload } from '@interfaces/editElement.interfaces';
-import { FabricJSEditor, FabricJSEditorHook } from '../custom-fabricjs-react-lib/editor';
-import { PageElement } from '@interfaces/page.interfaces';
+import { EditElementActionPayload } from '../models/editElement.interfaces';
+import { FabricJSEditorHook } from '../../custom-fabricjs-react-lib/editor';
+import { PageElement } from '../models/page.model';
 
 // ActionTypes for canvas actions
 export const SAVE_ELEMENTS = 'SAVE_ELEMENTS';
@@ -18,20 +18,16 @@ interface initEditorAction {
 interface saveElementAction {
   type: typeof SAVE_ELEMENTS,
   payload: PageElement[],
-};
+}
 
 interface updateElementNameAction {
   type: typeof UPDATE_ELEMENT_NAME,
-  payload: { elementId: string, updateName: String },
-};
+  payload: { elementId: string, updateName: string },
+}
 
 interface editElementAction {
   type: typeof EDIT_ELEMENT,
   payload: EditElementActionPayload
-};
-
-interface editElementFinishAction {
-  type: typeof EDIT_ELEMENT_FINISH,
 }
 
 export const initEditor = (editorHook: FabricJSEditorHook): initEditorAction => {
@@ -59,4 +55,3 @@ export type CanvasActionTypes = initEditorAction
   | saveElementAction
   | updateElementNameAction
   | editElementAction
-  | editElementFinishAction;

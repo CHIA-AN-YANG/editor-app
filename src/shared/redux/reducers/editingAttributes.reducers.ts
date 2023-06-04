@@ -1,4 +1,4 @@
-import { EditingAttributesActionTypes } from './editingAttributes.actions';
+import { EditingAttributesActionTypes } from '../actions/editingAttributes.actions';
 
 
 interface State {

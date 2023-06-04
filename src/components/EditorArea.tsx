@@ -1,31 +1,27 @@
-import { editElement, saveElements } from '@store/editElement.actions';
+import { saveElements } from '@store/actions/editElement.actions';
 import { RootState } from '@store/store';
-import fabric from 'fabric';
-import { useState, useEffect, use } from 'react';
+import fabric from 'fabric/fabric-impl';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFabricJSEditor, FabricJSCanvas, FabricJSEditor } from '../shared/custom-fabricjs-react-lib';
-import Toolbar from './Toolbar';
-import styles from "../styles/editor.module.scss";
-import { EditElementActionPayload } from '@interfaces/editElement.interfaces';
+import { useFabricJSEditor, FabricJSEditor, FabricJSCanvas } from '../shared/custom-fabricjs-react-lib';
 import { loadCanvasElements, toPageElementList } from '../shared/util/crossLibAdaptor';
-import { PageElement } from '@interfaces/page.interfaces';
-
+import styles from '@styles/editor.module.scss';
 
 export default function EditorArea() {
-  
+
   const dispatch = useDispatch();
-  const history: fabric.fabric.Object[] = [];
-  
-  const {editor, onReady} = useFabricJSEditor();
+  const history: fabric.Object[] = [];
+
+  const { editor, onReady } = useFabricJSEditor();
   const selectedPage = useSelector((state: RootState) => state.selectedPage.page);
   const selectedElement = useSelector((state: RootState) => state.selectedPage.selectedElement);
-  const {fillColor, strokeColor, strokeWidth, opacity} = useSelector((state: RootState) => state.editingAttributes);
+  const { fillColor, strokeColor, strokeWidth, opacity } = useSelector((state: RootState) => state.editingAttributes);
 
   useEffect(() => {
     if (editor?.canvas) {
-    editor.canvas.setHeight(500);
-    editor.canvas.setWidth(600);
-    editor.canvas.renderAll();
+      editor.canvas.setHeight(500);
+      editor.canvas.setWidth(600);
+      editor.canvas.renderAll();
     }
   }, [editor?.canvas.backgroundImage]);
 
@@ -52,16 +48,16 @@ export default function EditorArea() {
   }, [opacity]);
 
   // editing actions offered by fabricjs-react
-  const addCircle = (editor?:FabricJSEditor) => {
+  const addCircle = (editor?: FabricJSEditor) => {
     editor && editor.addCircle();
   };
-  const addRectangle = (editor?:FabricJSEditor) => {
+  const addRectangle = (editor?: FabricJSEditor) => {
     editor && editor.addRectangle();
   };
-  const addText = (editor?:FabricJSEditor) => {
+  const addText = (editor?: FabricJSEditor) => {
     editor && editor.addText("inset text");
   };
-  const toggleDraw = (isDrawingMode=true,editor?:FabricJSEditor) => {
+  const toggleDraw = (isDrawingMode = true, editor?: FabricJSEditor) => {
     editor && (editor.canvas.isDrawingMode = isDrawingMode);
   };
   const toggleSize = () => {
@@ -72,17 +68,17 @@ export default function EditorArea() {
       ? (editor.canvas.freeDrawingBrush.width = 5)
       : (editor.canvas.freeDrawingBrush.width = 12);
   };
-  const deletElement = (editor?:FabricJSEditor) => {
+  const deletElement = (editor?: FabricJSEditor) => {
     editor?.canvas.getActiveObject() && editor.canvas.remove(editor.canvas.getActiveObject()!);
   };
-  const undo = (editor?:FabricJSEditor) => {
+  const undo = (editor?: FabricJSEditor) => {
     if (editor?.canvas && (editor.canvas._objects.length > 0)) {
       history.push(editor.canvas._objects.pop()!);
     }
     editor?.canvas.renderAll();
   };
-  const clear = (editor?:FabricJSEditor) => {
-    if(!editor || !editor.canvas){
+  const clear = (editor?: FabricJSEditor) => {
+    if (!editor || !editor.canvas) {
       return;
     }
     editor.canvas._objects.splice(0, editor.canvas._objects.length);
@@ -90,10 +86,10 @@ export default function EditorArea() {
     editor.canvas.renderAll();
   };
   const handleElementsSave = () => {
-    if(!editor?.canvas._objects){
+    if (!editor?.canvas._objects) {
       return;
     }
-    if(editor?.canvas?._objects){
+    if (editor?.canvas?._objects) {
       dispatch(saveElements(toPageElementList(editor.canvas._objects, selectedPage?.elements)));
     }
   };
@@ -135,17 +131,18 @@ export default function EditorArea() {
   return (
     <section className={styles.center}>
       <div className={styles.panelBody}>
-      <div className={styles.editingArea}>
-        <div
-          style={{
-            width: "var(--editing-area-width)",
-            height: "var(--editing-area-height)",
-            backgroundColor: "white"
-          }}
-        >
-          <FabricJSCanvas className="sample-canvas" onReady={onReady} />
+        <div className={styles.editingArea}>
+          <div
+            style={{
+              width: "var(--editing-area-width)",
+              height: "var(--editing-area-height)",
+              backgroundColor: "white"
+            }}
+          >
+            <FabricJSCanvas className="sample-canvas" onReady={onReady} />
+          </div>
         </div>
       </div>
-      </div>
-    </section>)
+    </section>
+  )
 }

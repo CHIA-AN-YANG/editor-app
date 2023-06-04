@@ -10,3 +10,11 @@ export interface PageElement {
   name: string;
   data: fabric.IObjectOptions;
 }
+
+export const DEFAULT_PAGE_NAME = 'Untitled Page';
+
+export const initialPage: Page = {
+  id: 'page-initial',
+  name: DEFAULT_PAGE_NAME,
+  elements: []
+};

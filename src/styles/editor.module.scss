@@ -1,45 +1,3 @@
-$c-white: #FFF;
-$c-light: #E7E7E7;
-$c-accent: #c4cdca;
-$c-medium: gray;
-$c-background: #e2e2e2;
-$c-active: rgb(141, 174, 207);
-
-
-%panel {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  width: 300px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  height: 100vh;
-  color: $c-white;
-  overflow: hidden;
-
-  // TODO: RWD - close panel on pad view
-  .icon.expand {
-    display: none;
-  }
-
-  &.close {
-    width: 2px;
-
-    .icon.expand {
-      display: flex;
-    }
-  }
-
-}
-
-@mixin editorBackground {
-
-  background: repeating-linear-gradient(45deg, #414368 0, #414368 0.8px, #e5e5f700 0, #959595 5px),#667275;
-  box-shadow: inset -25px 25px 50px #50595b,
-    inset 25px -25px 80px #51595b99;
-}
-
 .activeItem {
   border: 2px solid $c-active;
 }
@@ -114,11 +72,13 @@ $c-active: rgb(141, 174, 207);
       margin-bottom: .5rem;
     }
   }
-
-  .emptyImage {
+  .pageImage, .emptyImage {
     width: 100px;
     height: 75px;
     border: 1px solid $c-accent;
+  }
+
+  .emptyImage {
     background-color: $c-white;
   }
 }
@@ -142,7 +102,7 @@ $c-active: rgb(141, 174, 207);
     appearance: none;
     outline: none;
     border: none;
-    color: white;
+    color: $c-white;
     opacity: 0.8;
     transform: translate(-5px, -5px);
     transition: all 0.2s linear;
@@ -205,28 +165,6 @@ $c-active: rgb(141, 174, 207);
   opacity: 0.6;
   vertical-align: middle;
   margin-inline-end: 1rem;
-}
-
-.toolbar {
-  position: absolute;
-  top: 1rem;
-  left: 2rem;
-  background-color: gray;
-  border-radius: 5px;
-  padding: .5rem;
-
-  button {
-    margin: 0 .25rem;
-    padding: .2rem;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-
-    &.active {
-      background-color: $c-active;
-    }
-  }
-
 }
 
 .center {

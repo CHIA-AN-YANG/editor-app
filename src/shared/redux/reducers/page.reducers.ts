@@ -1,18 +1,9 @@
-import { Page, PageElement } from '@interfaces/page.interfaces';
-//import { SAVE_ELEMENTS } from './editElement.actions';
-import { PageActionTypes, SELECT_PAGE, SELECT_ELEMENT, CREATE_PAGE, CHANGE_PAGE_NAME, DELETE_PAGE, SAVE_SELECTED_PAGE } from './page.actions';
-
-
+import { Page, initialPage } from '../models/page.model';
+import { PageActionTypes, CREATE_PAGE, SAVE_SELECTED_PAGE, DELETE_PAGE } from '../actions/page.actions';
 
 interface State {
   pages: Page[];
 }
-
-const initialPage: Page = {
-  id: 'initialPageId',
-  name: 'Initial Page',
-  elements: []
-};
 
 const initialState: State = {
   pages: [initialPage]
@@ -25,7 +16,7 @@ const pageReducer = (state = initialState, action: PageActionTypes): State => {
         pages: [...state.pages, action.payload]
       };
     case SAVE_SELECTED_PAGE:
-      let newPages = state.pages.map(page => (
+      const newPages = state.pages.map(page => (
         page.id === action.payload.id ? action.payload : page
       ))
       return {

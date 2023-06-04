@@ -1,4 +1,4 @@
-import { Page, PageElement } from '../interfaces/page.interfaces';
+import { DEFAULT_PAGE_NAME, Page } from '../models/page.model';
 
 // Action types
 export const CREATE_PAGE = 'CREATE_PAGE';
@@ -44,7 +44,7 @@ interface ChangePageNameAction {
 export const createPage = (): CreatePageAction => {
   const timestamp = Date.now().toString();
   const pageId = 'page-' + timestamp;
-  const pageName = 'Untitled Page';
+  const pageName = DEFAULT_PAGE_NAME;
 
   return {
     type: CREATE_PAGE,

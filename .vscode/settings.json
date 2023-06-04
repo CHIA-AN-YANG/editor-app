@@ -11,7 +11,8 @@
   "html.format.maxPreserveNewLines": 250,
   "typescript.preferences.quoteStyle": "single",
   "editor.codeActionsOnSave": {
-    "source.addMissingImports": true
+    "source.addMissingImports": true,
+    "source.fixAll.eslint": true
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.formatOnSave": true,

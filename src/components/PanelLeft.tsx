@@ -2,12 +2,12 @@ import { BsPencil } from "react-icons/bs";
 import { BsFillPlusSquareFill } from "react-icons/bs";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import styles from "../styles/editor.module.scss";
-import { changePageName, createPage, deletePage, saveSelectedPage, selectPage } from '@store/page.actions';
+import { changePageName, createPage, deletePage, saveSelectedPage, selectPage } from '@store/actions/page.actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@store/store';
 import Image from 'next/image';
 import { FormEvent, useState } from 'react';
-import { Page } from '@interfaces/page.interfaces';
+import { Page } from '../shared/redux/models/page.model';
 
 
 export default function PanelLeft() {
@@ -74,7 +74,6 @@ export default function PanelLeft() {
                 <Image
                   src={page.thumbnail || ''} alt={page.name}
                   className={styles.pageImage}
-                  width={100} height={24}
                   priority
                 ></Image> :
                 <div className={styles.emptyImage}></div>
@@ -94,7 +93,7 @@ export default function PanelLeft() {
       <div className={styles.panelBody}>
         <ul>
           {selectedPage?.elements.map((element) => (
-          <li>{element.name}&nbsp;<span className={styles.mutedText}>{element.data.type}</span></li>
+          <li key={element.code}>{element.name}&nbsp;<span className={styles.mutedText}>{element.data.type}</span></li>
           ))}
         </ul>
       </div>

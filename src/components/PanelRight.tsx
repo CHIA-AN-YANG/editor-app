@@ -1,17 +1,12 @@
-import { BsArrowBarUp } from "react-icons/bs";
-import { BsArrowUpShort } from "react-icons/bs";
-import { BsArrowBarDown } from "react-icons/bs";
-import { BsArrowDownShort } from "react-icons/bs";
 import { BsPencil } from "react-icons/bs";
 import { BsFillTrash3Fill } from "react-icons/bs";
-import styles from "../styles/editor.module.scss";
-import { EditElementActionPayload } from '@interfaces/editElement.interfaces';
-import { editElement } from '@store/editElement.actions';
+import { EditElementActionPayload } from '../shared/redux/models/editElement.interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { selectPage } from '@store/page.actions';
 import { RootState } from '@store/store';
-import {  setFillColor, setOpacity, setStrokeColor } from '@store/editingAttributes.actions';
+import { editElement } from '@store/actions/editElement.actions';
+import { setFillColor, setOpacity, setStrokeColor } from '@store/actions/editingAttributes.actions';
+import styles from '@styles/editor.module.scss';
 
 enum EditorMode {
   EDIT = 'edit',
@@ -23,8 +18,8 @@ export default function PanelRight() {
 
   const dispatch = useDispatch();
   const [mode, setMode] = useState(EditorMode.EDIT);
-  const selectedElement = useSelector((state: RootState) => state.selectedPage.selectedElement);
   const {fillColor, strokeColor, opacity} = useSelector((state: RootState) => state.editingAttributes);
+  const {selectedElement} = useSelector((state: RootState) => state.selectedPage);
 
   const handleElementsEdit = (payload: EditElementActionPayload) => {
     dispatch(editElement(payload));
@@ -105,14 +100,12 @@ export default function PanelRight() {
     })
   }
 
-
-
   return (
     <section className={styles.panelRight}>
       
       <div className={styles.panelHead}>
         <div className={styles.panelHeadTitle}>
-          Landing Page A
+          {selectedElement?.elementId ? selectedElement.elementId : 'Unnamed Element'}
           <BsPencil></BsPencil>
         </div>
         <div className={styles.panelHeadBtn}>

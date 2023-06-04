@@ -1,26 +1,18 @@
 
 
-import { Page } from '@interfaces/page.interfaces';
-import { CanvasActionTypes, EDIT_ELEMENT, EDIT_ELEMENT_FINISH, SAVE_ELEMENTS } from './editElement.actions';
-import { CHANGE_PAGE_NAME, PageActionTypes, SELECT_PAGE } from './page.actions';
+import { DEFAULT_PAGE_NAME, Page, initialPage } from '../models/page.model';
+import { CanvasActionTypes, EDIT_ELEMENT, SAVE_ELEMENTS } from '../actions/editElement.actions';
+import { CHANGE_PAGE_NAME, PageActionTypes, SELECT_PAGE } from '../actions/page.actions';
 
-const INITIAL = 'initial';
 
 interface State {
   page: Page | null;
   selectedElement: {
     editorAction: string;
-    newAction: boolean;
     elementId?: string;
     editorParameters?: { [key: string]: number | string | boolean };
   } | null;
 }
-
-const initialPage: Page = {
-  id: 'initialPageId',
-  name: 'Initial Page',
-  elements: []
-};
 
 const initialState: State = {
   page: initialPage,
@@ -39,7 +31,7 @@ const selectedPageReducer = (state = initialState, action: PageActionTypes | Can
         ...state,
         page: {
           ...state.page,
-          name: action.payload || 'Untitled Page'
+          name: action.payload || DEFAULT_PAGE_NAME
         }
       } : { ...state }
     case EDIT_ELEMENT:
@@ -47,16 +39,6 @@ const selectedPageReducer = (state = initialState, action: PageActionTypes | Can
         ...state,
         selectedElement: {
           ...action.payload,
-          newAction: true
-        }
-      };
-    case EDIT_ELEMENT_FINISH:
-      return {
-        ...state,
-        selectedElement: {
-          editorAction: INITIAL,
-          elementId: state.selectedElement?.elementId,
-          newAction: false
         }
       };
     case SAVE_ELEMENTS:
