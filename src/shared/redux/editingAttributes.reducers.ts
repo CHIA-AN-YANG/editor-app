@@ -9,9 +9,9 @@ interface State {
 }
 
 const initialState: State = {
-  fillColor: 'salmon',
+  fillColor: '#FFFFE0',
   strokeWidth: 2,
-  strokeColor: 'lightblue',
+  strokeColor: '#FA8072',
   opacity: 1
 };
 

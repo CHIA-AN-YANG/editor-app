@@ -1,13 +1,13 @@
-import { FabricJSEditor } from '../custom-fabricjs-react-lib';
-import { SAVE_ELEMENTS } from './editElement.actions';
 import { Page, PageElement } from '../interfaces/page.interfaces';
 
 // Action types
 export const CREATE_PAGE = 'CREATE_PAGE';
 export const SELECT_PAGE = 'SELECT_PAGE';
-export const SELECT_ELEMENT = 'SELECT_ELEMENT';
-export const DELETE_PAGE = 'DELETE_PAGE';
 export const CHANGE_PAGE_NAME = 'CHANGE_PAGE_NAME';
+export const SAVE_SELECTED_PAGE = 'SAVE_SELECTED_PAGE';
+export const DELETE_PAGE = 'DELETE_PAGE';
+export const SELECT_ELEMENT = 'SELECT_ELEMENT';
+
 
 
 // Action interfaces
@@ -20,6 +20,10 @@ interface SelectPageAction {
   payload: Page;
 }
 
+interface SaveSelectedPageAction {
+  type: typeof SAVE_SELECTED_PAGE;
+  payload: Page;
+}
 interface SelectElementAction {
   type: typeof SELECT_ELEMENT;
   payload: string | null;
@@ -32,7 +36,7 @@ interface DeletePageAction {
 
 interface ChangePageNameAction {
   type: typeof CHANGE_PAGE_NAME;
-  payload: { id: string; newName: string };
+  payload: string;
 }
 
 
@@ -54,6 +58,13 @@ export const selectPage = (page: Page): SelectPageAction => {
   };
 };
 
+export const saveSelectedPage = (page: Page): SaveSelectedPageAction => {
+  return {
+    type: SAVE_SELECTED_PAGE,
+    payload: page
+  };
+};
+
 export const selectElement = (elementId: string | null): SelectElementAction => {
   return {
     type: SELECT_ELEMENT,
@@ -66,14 +77,15 @@ export const deletePage = (id: string): DeletePageAction => ({
   payload: { id }
 });
 
-export const changePageName = (id: string, newName: string): ChangePageNameAction => ({
+export const changePageName = (newName: string): ChangePageNameAction => ({
   type: CHANGE_PAGE_NAME,
-  payload: { id, newName }
+  payload: newName
 });
 
 // Export action types
 export type PageActionTypes = CreatePageAction
   | SelectPageAction
   | SelectElementAction
+  | SaveSelectedPageAction
   | DeletePageAction
   | ChangePageNameAction;

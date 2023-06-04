@@ -41,15 +41,7 @@ export const initEditor = (editorHook: FabricJSEditorHook): initEditorAction => 
   }
 }
 
-export const saveElements = (editor: FabricJSEditor): saveElementAction => {
-  const elements: PageElement[] = [];
-  editor.canvas._objects.forEach((element, idx) => (
-    elements.push({
-      code: idx + '',
-      name: 'element-' + idx,
-      data: element.toJSON()
-    })
-  ));
+export const saveElements = (elements: PageElement[]): saveElementAction => {
   return {
     type: SAVE_ELEMENTS,
     payload: elements,

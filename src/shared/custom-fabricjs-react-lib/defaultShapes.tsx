@@ -1,5 +1,5 @@
-export const STROKE = 'salmon'
-export const FILL = 'lightblue'
+export const STROKE = '#FA8072'
+export const FILL = '#FFFFE0'
 export const OPACITY = 1
 
 export const CIRCLE = {
@@ -15,7 +15,7 @@ export const RECTANGLE = {
   top: 100,
   fill: FILL,
   stroke: STROKE,
-  width: 40,
+  width: 100,
   height: 40,
   angle: 0
 }
@@ -34,6 +34,7 @@ export const TEXT = {
   left: 100,
   top: 100,
   fontSize: 16,
+  width:210,
   fontFamily: 'Arial',
   fill: STROKE
 }

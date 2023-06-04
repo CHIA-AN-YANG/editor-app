@@ -2,7 +2,7 @@
 
 import { Page } from '@interfaces/page.interfaces';
 import { CanvasActionTypes, EDIT_ELEMENT, EDIT_ELEMENT_FINISH, SAVE_ELEMENTS } from './editElement.actions';
-import { PageActionTypes, SELECT_PAGE } from './page.actions';
+import { CHANGE_PAGE_NAME, PageActionTypes, SELECT_PAGE } from './page.actions';
 
 const INITIAL = 'initial';
 
@@ -34,6 +34,14 @@ const selectedPageReducer = (state = initialState, action: PageActionTypes | Can
         page: action.payload,
         selectedElement: null
       };
+    case CHANGE_PAGE_NAME:
+      return state.page ? {
+        ...state,
+        page: {
+          ...state.page,
+          name: action.payload || 'Untitled Page'
+        }
+      } : { ...state }
     case EDIT_ELEMENT:
       return {
         ...state,
@@ -57,7 +65,7 @@ const selectedPageReducer = (state = initialState, action: PageActionTypes | Can
         page: {
           ...state.page,
           elements: action.payload
-        }
+        },
       } : { ...state }
     default:
       return state;

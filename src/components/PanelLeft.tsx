@@ -2,7 +2,7 @@ import { BsPencil } from "react-icons/bs";
 import { BsFillPlusSquareFill } from "react-icons/bs";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import styles from "../styles/editor.module.scss";
-import { changePageName, createPage, deletePage, selectPage } from '@store/page.actions';
+import { changePageName, createPage, deletePage, saveSelectedPage, selectPage } from '@store/page.actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@store/store';
 import Image from 'next/image';
@@ -25,6 +25,7 @@ export default function PanelLeft() {
     dispatch(createPage());
   };
   const handlePageSelect = (page: Page) => {
+    selectedPage && dispatch(saveSelectedPage(selectedPage));
     dispatch(selectPage(page));
   };
   const handlePageDelete = (pageId: string) => {
@@ -33,7 +34,7 @@ export default function PanelLeft() {
 
   const handleBlur = (event: FormEvent<HTMLInputElement>) => {
     if (selectedPage) {
-      dispatch(changePageName(selectedPage?.id, (event.target as HTMLInputElement).value));
+      dispatch(changePageName((event.target as HTMLInputElement).value));
     }
     setEditing(false);
   };
@@ -57,8 +58,11 @@ export default function PanelLeft() {
       </div>
 
       <div className={styles.panelBody}>
-        {pages.map((page, idx) => (
-          <div
+        {pages.map((item, idx) => {
+
+          const page = (item.id === selectedPage?.id) ? selectedPage : item;
+
+          return <div
             key={page.id}
             className={`${styles.pageThumbnailWrapper} ${selectedPage?.id === page.id ? styles.activeItem : ''}`}
             onClick={() => handlePageSelect(page)}
@@ -68,11 +72,9 @@ export default function PanelLeft() {
               <p>{page.name}</p>
               {page.thumbnail ?
                 <Image
-                  src={page.thumbnail || ''}
-                  alt={page.name}
+                  src={page.thumbnail || ''} alt={page.name}
                   className={styles.pageImage}
-                  width={100}
-                  height={24}
+                  width={100} height={24}
                   priority
                 ></Image> :
                 <div className={styles.emptyImage}></div>
@@ -80,7 +82,7 @@ export default function PanelLeft() {
             </div>
           </div>
 
-        ))}
+            })}
       </div>
 
       <div className={styles.panelHead}>
@@ -92,7 +94,6 @@ export default function PanelLeft() {
       <div className={styles.panelBody}>
         <ul>
           {selectedPage?.elements.map((element) => (
-            // @ts-expect-error type does not exist on Object
           <li>{element.name}&nbsp;<span className={styles.mutedText}>{element.data.type}</span></li>
           ))}
         </ul>

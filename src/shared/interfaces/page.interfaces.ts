@@ -8,5 +8,5 @@ export interface Page {
 export interface PageElement {
   code: string;
   name: string;
-  data: Object;
+  data: fabric.IObjectOptions;
 }

@@ -7,6 +7,8 @@ import { useFabricJSEditor, FabricJSCanvas, FabricJSEditor } from '../shared/cus
 import Toolbar from './Toolbar';
 import styles from "../styles/editor.module.scss";
 import { EditElementActionPayload } from '@interfaces/editElement.interfaces';
+import { loadCanvasElements, toPageElementList } from '../shared/util/crossLibAdaptor';
+import { PageElement } from '@interfaces/page.interfaces';
 
 
 export default function EditorArea() {
@@ -26,6 +28,11 @@ export default function EditorArea() {
     editor.canvas.renderAll();
     }
   }, [editor?.canvas.backgroundImage]);
+
+  useEffect(() => {
+    editor?.canvas && loadCanvasElements(editor.canvas, selectedPage?.elements);
+    editor?.canvas.renderAll();
+  }, [selectedPage?.id]);
 
   useEffect(() => {
     editor && (editor.canvas.freeDrawingBrush.color = fillColor);
@@ -82,7 +89,15 @@ export default function EditorArea() {
     history.splice(0, history.length);
     editor.canvas.renderAll();
   };
-  
+  const handleElementsSave = () => {
+    if(!editor?.canvas._objects){
+      return;
+    }
+    if(editor?.canvas?._objects){
+      dispatch(saveElements(toPageElementList(editor.canvas._objects, selectedPage?.elements)));
+    }
+  };
+
   useEffect(() => {
     if (selectedElement?.editorAction) {
       switch (selectedElement.editorAction) {
@@ -113,26 +128,13 @@ export default function EditorArea() {
         default:
           break;
       }
+      handleElementsSave();
     }
   }, [selectedElement]);
 
-  const handleElementsSave = () => {
-    if(editor?.canvas?._objects){
-      dispatch(saveElements(editor));
-      console.log('saveElements',selectedPage)
-    }
-  };
-
   return (
     <section className={styles.center}>
-      <Toolbar></Toolbar>
       <div className={styles.panelBody}>
-      <div className={styles.panelBodyTemp}>
-          <button onClick={handleElementsSave}>
-            Element save
-          </button>
-      </div>
-
       <div className={styles.editingArea}>
         <div
           style={{
@@ -147,55 +149,3 @@ export default function EditorArea() {
       </div>
     </section>)
 }
-
-  // const toggleDraw = () => {
-  //   if (!editor?.editor || !fabric) {
-  //     return;
-  //   }
-  //   editor.editor.canvas.isDrawingMode = !editor.editor.canvas.isDrawingMode;
-  // };
-  // const undo = () => {
-  //   console.log(editor?.editor?.canvas._objects)
-  //   if (fabric && (editor?.editor?.canvas._objects.length)) {
-  //     history.push(editor.editor.canvas._objects.pop()!);
-  //   }
-  //   editor?.editor?.canvas.renderAll();
-  // };
-
-  // const clear = () => {
-  //   if (!editor?.editor || !fabric) {
-  //     return;
-  //   }
-  //   editor.editor.canvas._objects.splice(0, editor.editor.canvas._objects.length);
-  //   history.splice(0, history.length);
-  //   editor.editor.canvas.renderAll();
-  // };
-
-  // const removeSelectedObject = () => {
-  //   if (!editor?.editor || !fabric) {
-  //     return;
-  //   }
-  //   if (fabric && editor.editor.canvas.getActiveObject()) {
-  //     editor.editor.canvas.remove(editor.editor.canvas.getActiveObject()!);
-  //   }
-  // };
-  // const onAddLine = () => {
-  //   console.log({history})
-  //   if (!editor?.editor || !fabric) {
-  //     return;
-  //   }
-  //   editor.editor.addLine();
-  // };
-  // const onAddRectangle = () => {
-  //   console.log({history})
-  //   if (!editor?.editor || !fabric) {
-  //     return;
-  //   }
-  //   editor.editor.addRectangle();
-  // };
-  // const addText = () => {
-  //   if (!editor?.editor || !fabric) {
-  //     return;
-  //   }
-  //   editor.editor.addText("inset text");
-  // };
