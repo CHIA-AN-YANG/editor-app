@@ -1,4 +1,6 @@
-// Action payloads
+/**
+* edit element action payloads
+*/
 export interface CircleActionPayload {
   editorAction: 'ADD_CIRCLE';
   editorParameters: { radius: number };

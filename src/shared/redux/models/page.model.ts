@@ -1,4 +1,7 @@
-
+/**
+* interface and constants shared by page and selectedPage reducers
+* the page thumbnail is a Base64 encoded image
+*/
 export interface Page {
   id: string;
   name: string;

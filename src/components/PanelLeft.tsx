@@ -2,7 +2,7 @@ import { BsPencil } from "react-icons/bs";
 import { BsFillPlusSquareFill } from "react-icons/bs";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import styles from "../styles/editor.module.scss";
-import { changePageName, createPage, deletePage, saveSelectedPage, selectPage } from '@store/actions/page.actions';
+import { changePageName, createPage, deletePage, selectPageStart } from '@store/actions/page.actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@store/store';
 import Image from 'next/image';
@@ -24,9 +24,8 @@ export default function PanelLeft() {
   const handlePageCreate = () => {
     dispatch(createPage());
   };
-  const handlePageSelect = (page: Page) => {
-    selectedPage && dispatch(saveSelectedPage(selectedPage));
-    dispatch(selectPage(page));
+  const handlePageSelect = (pageId:string) => {
+    dispatch(selectPageStart(pageId));
   };
   const handlePageDelete = (pageId: string) => {
     dispatch(deletePage(pageId));
@@ -65,7 +64,7 @@ export default function PanelLeft() {
           return <div
             key={page.id}
             className={`${styles.pageThumbnailWrapper} ${selectedPage?.id === page.id ? styles.activeItem : ''}`}
-            onClick={() => handlePageSelect(page)}
+            onClick={() => handlePageSelect(page.id)}
           >
             <p>{idx}</p>
             <div>
@@ -74,6 +73,7 @@ export default function PanelLeft() {
                 <Image
                   src={page.thumbnail || ''} alt={page.name}
                   className={styles.pageImage}
+                  height={100} width={100}
                   priority
                 ></Image> :
                 <div className={styles.emptyImage}></div>

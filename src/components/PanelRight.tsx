@@ -1,9 +1,8 @@
-import { BsFillTrash3Fill } from "react-icons/bs";
 import { EditElementActionPayload } from '../shared/redux/models/editElement.interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { RootState } from '@store/store';
-import { editElement } from '@store/actions/editElement.actions';
+import { editElement } from '@store/actions/element.actions';
 import { setFillColor, setOpacity, setStrokeColor } from '@store/actions/editingAttributes.actions';
 import styles from '@styles/editor.module.scss';
 
@@ -18,7 +17,6 @@ export default function PanelRight() {
   const dispatch = useDispatch();
   const [mode, setMode] = useState(EditorMode.EDIT);
   const {fillColor, strokeColor, opacity} = useSelector((state: RootState) => state.editingAttributes);
-  const {selectedElement} = useSelector((state: RootState) => state.selectedPage);
 
   const handleElementsEdit = (payload: EditElementActionPayload) => {
     dispatch(editElement(payload));
@@ -103,12 +101,6 @@ export default function PanelRight() {
     <section className={styles.panelRight}>
       
       <div className={styles.panelHead}>
-        <div className={styles.panelHeadTitle}>
-          {selectedElement?.elementId ? selectedElement.elementId : 'Unnamed Element'}
-        </div>
-        <div className={styles.panelHeadBtn}>
-          <BsFillTrash3Fill></BsFillTrash3Fill>
-        </div>
       </div>
 
       <div className={styles.panelBody}>

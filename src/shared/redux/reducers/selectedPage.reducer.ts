@@ -1,8 +1,8 @@
 
 
 import { DEFAULT_PAGE_NAME, Page, initialPage } from '../models/page.model';
-import { CanvasActionTypes, EDIT_ELEMENT, SAVE_ELEMENTS } from '../actions/editElement.actions';
-import { CHANGE_PAGE_NAME, PageActionTypes, SELECT_PAGE } from '../actions/page.actions';
+import { CanvasActionTypes, EDIT_ELEMENT, SAVE_ELEMENTS } from '../actions/element.actions';
+import { PageActionTypes, SELECT_PAGE_END, CHANGE_PAGE_NAME, SAVE_PAGE_THUMBNAIL } from '@store/actions/page.actions';
 
 
 interface State {
@@ -21,9 +21,9 @@ const initialState: State = {
 
 const selectedPageReducer = (state = initialState, action: PageActionTypes | CanvasActionTypes): State => {
   switch (action.type) {
-    case SELECT_PAGE:
+    case SELECT_PAGE_END:
       return {
-        page: action.payload,
+        page: action.payload.nextPage || state.page,
         selectedElement: null
       };
     case CHANGE_PAGE_NAME:
@@ -48,6 +48,14 @@ const selectedPageReducer = (state = initialState, action: PageActionTypes | Can
           ...state.page,
           elements: action.payload
         },
+      } : { ...state }
+    case SAVE_PAGE_THUMBNAIL:
+      return state.page ? {
+        ...state,
+        page: {
+          ...state.page,
+          thumbnail: action.payload
+        }
       } : { ...state }
     default:
       return state;

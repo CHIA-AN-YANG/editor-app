@@ -1,3 +1,4 @@
+@import './base.scss';
 .activeItem {
   border: 2px solid $c-active;
 }
@@ -59,23 +60,29 @@
   .pageThumbnailWrapper {
     display: flex;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
     padding: 0.5rem 1rem;
 
     >p {
-      margin-bottom: auto;
-      margin-right: 1.2rem;
+      display: inline-block;
+      vertical-align: middle;
+      width: 40px;
     }
-
+    >div {
+      display:contents;
+    }
     >div>p {
-      margin-bottom: .5rem;
+      display: inline-block;
+      vertical-align: middle;
+      margin-inline-end: .5rem;
     }
   }
   .pageImage, .emptyImage {
-    width: 100px;
-    height: 75px;
+    width: 30px;
+    height: 15px;
     border: 1px solid $c-accent;
+    background-color: $c-white;
   }
 
   .emptyImage {
@@ -127,7 +134,7 @@
     margin-inline-end: .6rem;
     text-align: center;
     font-family: monospace;
-    background-color: var(--color-dime);
+    background-color: $c-background;
   }
 
   input[type="color"] {

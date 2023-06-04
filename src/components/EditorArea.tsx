@@ -1,11 +1,12 @@
-import { saveElements } from '@store/actions/editElement.actions';
+import { saveElements } from '@store/actions/element.actions';
 import { RootState } from '@store/store';
-import fabric from 'fabric/fabric-impl';
+import {fabric} from 'fabric';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFabricJSEditor, FabricJSEditor, FabricJSCanvas } from '../shared/custom-fabricjs-react-lib';
 import { loadCanvasElements, toPageElementList } from '../shared/util/crossLibAdaptor';
 import styles from '@styles/editor.module.scss';
+import { changePageThumbnail, selectPageEnd } from '@store/actions/page.actions';
 
 export default function EditorArea() {
 
@@ -13,6 +14,7 @@ export default function EditorArea() {
   const history: fabric.Object[] = [];
 
   const { editor, onReady } = useFabricJSEditor();
+  const { nextPageId, pages, isPageLoading} = useSelector((state: RootState) => state.page);
   const selectedPage = useSelector((state: RootState) => state.selectedPage.page);
   const selectedElement = useSelector((state: RootState) => state.selectedPage.selectedElement);
   const { fillColor, strokeColor, strokeWidth, opacity } = useSelector((state: RootState) => state.editingAttributes);
@@ -26,9 +28,26 @@ export default function EditorArea() {
   }, [editor?.canvas.backgroundImage]);
 
   useEffect(() => {
+    if(isPageLoading){
+      // TODO: add handleThumbnailSave() when there's sufficient storage;
+      handleElementsSave();
+    }
+  }, [isPageLoading]);
+
+  useEffect(() => {
+    editor && (editor.canvas._objects.length = 0);
     editor?.canvas && loadCanvasElements(editor.canvas, selectedPage?.elements);
     editor?.canvas.renderAll();
   }, [selectedPage?.id]);
+
+  useEffect(() => {
+    if(nextPageId){
+      const nextPage = pages.find(page => page.id === nextPageId)
+      const currentPage = selectedPage ? selectedPage : null;
+      nextPage && dispatch(selectPageEnd(currentPage, nextPage));
+      console.log('dispatched selectPageEnd')
+    }
+  }, [selectedPage?.elements]);
 
   useEffect(() => {
     editor && (editor.canvas.freeDrawingBrush.color = fillColor);
@@ -47,7 +66,7 @@ export default function EditorArea() {
     editor && editor.setOpacity(opacity);
   }, [opacity]);
 
-  // editing actions offered by fabricjs-react
+  // editing actions offered by fabricjs
   const addCircle = (editor?: FabricJSEditor) => {
     editor && editor.addCircle();
   };
@@ -57,8 +76,8 @@ export default function EditorArea() {
   const addText = (editor?: FabricJSEditor) => {
     editor && editor.addText("inset text");
   };
-  const toggleDraw = (isDrawingMode = true, editor?: FabricJSEditor) => {
-    editor && (editor.canvas.isDrawingMode = isDrawingMode);
+  const toggleDraw = (editor?: FabricJSEditor) => {
+    editor && (editor.canvas.isDrawingMode = !editor.canvas.isDrawingMode);
   };
   const toggleSize = () => {
     if (!editor || !fabric) {
@@ -85,12 +104,24 @@ export default function EditorArea() {
     history.splice(0, history.length);
     editor.canvas.renderAll();
   };
-  const handleElementsSave = () => {
-    if (!editor?.canvas._objects) {
-      return;
+  const handleThumbnailSave = () => {
+    if (editor?.canvas) {
+      const dataURL = editor.canvas.toDataURL({
+        multiplier: 0.16,
+        left: 0,
+        top: 0,
+        quality: 0.01
+      });
+      dispatch(changePageThumbnail(dataURL));
+      console.log('dispatched changePageThumbnail')
+    } else {
+      dispatch(changePageThumbnail(''));
     }
+  };
+  const handleElementsSave = () => {
     if (editor?.canvas?._objects) {
       dispatch(saveElements(toPageElementList(editor.canvas._objects, selectedPage?.elements)));
+      console.log('dispatched saveElements')
     }
   };
 
@@ -107,7 +138,7 @@ export default function EditorArea() {
           addText(editor);
           break;
         case 'TOGGLE_DRAW':
-          toggleDraw(Boolean(selectedElement.editorParameters?.isDrawingMode), editor);
+          toggleDraw(editor);
           break;
         case 'TOGGLE_SIZE':
           toggleSize();
@@ -124,9 +155,9 @@ export default function EditorArea() {
         default:
           break;
       }
-      handleElementsSave();
     }
   }, [selectedElement]);
+
 
   return (
     <section className={styles.center}>

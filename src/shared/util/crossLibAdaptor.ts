@@ -12,10 +12,10 @@ function renderCanvasObjectByType(object: fabric.IObjectOptions) {
     case 'triangle':
       return new fabric.Triangle(object);
     case 'path':
-      let pathObject = object as fabric.IPathOptions;
+      const pathObject = object as fabric.Path;
       return new fabric.Path(pathObject.path, pathObject);
     case 'text':
-      let textObject = object as fabric.ITextOptions;
+      const textObject = object as fabric.Text;
       return new fabric.Text(textObject.text || ' ', textObject);
     case 'triangle':
       return new fabric.Triangle(object);
