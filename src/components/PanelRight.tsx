@@ -1,4 +1,3 @@
-import { BsPencil } from "react-icons/bs";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { EditElementActionPayload } from '../shared/redux/models/editElement.interfaces';
 import { useDispatch, useSelector } from 'react-redux';
@@ -106,7 +105,6 @@ export default function PanelRight() {
       <div className={styles.panelHead}>
         <div className={styles.panelHeadTitle}>
           {selectedElement?.elementId ? selectedElement.elementId : 'Unnamed Element'}
-          <BsPencil></BsPencil>
         </div>
         <div className={styles.panelHeadBtn}>
           <BsFillTrash3Fill></BsFillTrash3Fill>
@@ -160,9 +158,6 @@ export default function PanelRight() {
           </button>
           <button onClick={toggleSize}>
             Change Brush Size
-          </button>
-          <button onClick={undo}>
-            Undo
           </button>
           <button onClick={deletElement}>
             Delete Element(s)
