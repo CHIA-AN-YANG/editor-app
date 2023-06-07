@@ -15,14 +15,14 @@ interface initEditorAction {
   type: typeof INIT_EDITOR,
   payload: FabricJSEditorHook
 }
-interface saveElementAction {
+interface saveElementsAction {
   type: typeof SAVE_ELEMENTS,
   payload: PageElement[],
 }
 
 interface updateElementNameAction {
   type: typeof UPDATE_ELEMENT_NAME,
-  payload: { elementId: string, updateName: string },
+  payload: { elementId: string, newName: string },
 }
 
 interface editElementAction {
@@ -37,10 +37,17 @@ export const initEditor = (editorHook: FabricJSEditorHook): initEditorAction => 
   }
 }
 
-export const saveElements = (elements: PageElement[]): saveElementAction => {
+export const saveElements = (elements: PageElement[]): saveElementsAction => {
   return {
     type: SAVE_ELEMENTS,
     payload: elements,
+  }
+}
+
+export const updateElementName = (elementId: string, newName: string): updateElementNameAction => {
+  return {
+    type: UPDATE_ELEMENT_NAME,
+    payload: { elementId, newName },
   }
 }
 
@@ -52,6 +59,6 @@ export const editElement = (editorAction: EditElementActionPayload): editElement
 }
 
 export type CanvasActionTypes = initEditorAction
-  | saveElementAction
+  | saveElementsAction
   | updateElementNameAction
   | editElementAction

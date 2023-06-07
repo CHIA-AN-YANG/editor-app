@@ -2,6 +2,7 @@ export const SET_FILL_COLOR = 'SET_FILL_COLOR';
 export const SET_STROKE_COLOR = 'SET_STROKE_COLOR';
 export const SET_STROKE_WIDTH = 'SET_STROKE_WIDTH';
 export const SET_OPACITY = 'SET_OPACITY';
+export const SET_POSITION = 'SET_POSITION';
 
 interface SetFillColorAction {
   type: typeof SET_FILL_COLOR;
@@ -21,6 +22,11 @@ interface SetStrokeWidthAction {
 interface SetOpacityAction {
   type: typeof SET_OPACITY;
   payload: number;
+}
+
+interface SetPositionAction {
+  type: typeof SET_POSITION;
+  payload: { x: number | undefined, y: number | undefined };
 }
 
 export const setFillColor = (color: string): SetFillColorAction => ({
@@ -43,4 +49,9 @@ export const setOpacity = (opacity: number): SetOpacityAction => ({
   payload: opacity
 });
 
-export type EditingAttributesActionTypes = SetFillColorAction | SetStrokeColorAction | SetStrokeWidthAction | SetOpacityAction;
+export const setPosition = (x: number | undefined, y: number | undefined): SetPositionAction => ({
+  type: SET_POSITION,
+  payload: { x, y }
+});
+
+export type EditingAttributesActionTypes = SetFillColorAction | SetStrokeColorAction | SetStrokeWidthAction | SetOpacityAction | SetPositionAction;

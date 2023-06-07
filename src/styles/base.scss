@@ -16,7 +16,8 @@ $c-active: rgb(141, 174, 207);
   flex-shrink: 0;
   height: 100vh;
   color: $c-white;
-  overflow: hidden;s
+  overflow: hidden;
+  font-weight: 500;
   // TODO: RWD - close panel on pad view
   .icon.expand {
     display: none;
@@ -33,7 +34,7 @@ $c-active: rgb(141, 174, 207);
 }
 
 @mixin editorBackground {
-  background: repeating-linear-gradient(45deg, #414368 0, #414368 0.8px, #e5e5f700 0, #959595 5px),#667275;
+  background: repeating-linear-gradient(45deg, #414368 0, #414368 0.8px, #667275 0, #959595 5px),#667275;
   box-shadow: inset -25px 25px 50px #50595b,
     inset 25px -25px 80px #51595b99;
 }

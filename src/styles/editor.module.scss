@@ -21,6 +21,7 @@
   @include editorBackground;
   display: flex;
   justify-content: space-between;
+  height: 2.375rem;
   padding: 0.5rem 1rem;
   background-color: $c-light;
   border-bottom: 1px solid $c-medium;
@@ -42,8 +43,16 @@
   align-items: center;
 
   svg {
-    margin-inline-start: .5rem
+    margin-inline-start: .5rem;
+    color: $c-active;
   }
+}
+
+.panelBody {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 1rem 2rem;
 }
 
 .panelLeft {
@@ -53,29 +62,45 @@
   border-inline-end: 1px solid $c-medium;
 
   .panelBody {
-    max-height: 50vh;
+    max-height: subtract(50vh, 2.375rem);
     overflow-y: scroll;
+    align-items: flex-start;
+    input[type="text"]{
+      width: 120px;
+      padding: 0.2rem 1rem;
+    }
+    ul {
+      text-indent: 1em;
+      margin-inline-start: 1.6em;
+    }
   }
 
   .pageThumbnailWrapper {
     display: flex;
-    width: 100%;
+    width: 205px;
     justify-content: space-around;
     align-items: center;
-    padding: 0.5rem 1rem;
+    padding: 0 0.5rem;
+    height: 36px;
+    box-sizing: content-box;
+    margin-bottom: 0.5rem;
+    margin-inline: -0.5rem;
 
     >p {
       display: inline-block;
       vertical-align: middle;
-      width: 40px;
+      width: 2rem;
     }
     >div {
       display:contents;
     }
-    >div>p {
-      display: inline-block;
+    >div>span {
+      display: inline-flex;
       vertical-align: middle;
-      margin-inline-end: .5rem;
+    }
+
+    .mutedText{
+      display: none;
     }
   }
   .pageImage, .emptyImage {
@@ -87,6 +112,7 @@
 
   .emptyImage {
     background-color: $c-white;
+    margin-inline-start: .5rem;
   }
 }
 
@@ -99,7 +125,6 @@
     display: flex;
     width: 100%;
     padding: 0.5rem 1rem;
-    margin-inline: 1rem;
     margin-top: 0.8rem;
     text-transform: uppercase;
     justify-content: center;
@@ -123,17 +148,10 @@
       transform: translate(0, 0);
     }
   }
-
+  
   input[type="number"] {
-    appearance: none;
-    outline: none;
-    padding: 0.2rem;
-    border: none;
-    border-radius: var(--border-radius);
-    width: 3rem;
+    max-width: 3rem;
     margin-inline-end: .6rem;
-    text-align: center;
-    font-family: monospace;
     background-color: $c-background;
   }
 
@@ -155,6 +173,19 @@
   margin-bottom: .6rem;
 }
 
+.panelBodyInputFormGroupRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: .6rem;
+
+  .panelBodyInputTitle {
+    display: flex;
+    align-items: center;
+  }
+}
+
 .panelBodyInputFlexColumn {
   @extend .panelBodyInput !optional;
   flex-direction: column;
@@ -169,7 +200,7 @@
 
 .panelBodyInputTitle {
   text-transform: uppercase;
-  opacity: 0.6;
+  opacity: 0.9;
   vertical-align: middle;
   margin-inline-end: 1rem;
 }
@@ -182,31 +213,6 @@
   flex-grow: 1;
   padding: 1rem;
 
-}
-
-.panelBody {
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem 2rem;
-}
-
-.panelBodyTemp {
-  display: flex;
-  flex-direction: row;
-  height: 50px;
-  padding: 1rem 0;
-
-  button {
-    appearance: none;
-    border: none;
-    outline: none;
-    color: $c-medium;
-    border-radius: var(--border-radius);
-    margin: 0 .2rem;
-    padding: .2rem .8rem;
-  }
 }
 
 .editingArea {

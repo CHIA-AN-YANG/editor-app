@@ -4,7 +4,7 @@ import {fabric} from 'fabric';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFabricJSEditor, FabricJSEditor, FabricJSCanvas } from '../shared/custom-fabricjs-react-lib';
-import { loadCanvasElements, toPageElementList } from '../shared/util/crossLibAdaptor';
+import { loadCanvasElements, toPageElementList } from '../shared/util/library.adaptor';
 import styles from '@styles/editor.module.scss';
 import { changePageThumbnail, selectPageEnd } from '@store/actions/page.actions';
 
@@ -17,7 +17,7 @@ export default function EditorArea() {
   const { nextPageId, pages, isPageLoading} = useSelector((state: RootState) => state.page);
   const selectedPage = useSelector((state: RootState) => state.selectedPage.page);
   const selectedElement = useSelector((state: RootState) => state.selectedPage.selectedElement);
-  const { fillColor, strokeColor, strokeWidth, opacity } = useSelector((state: RootState) => state.editingAttributes);
+  const { positionX, positionY, fillColor, strokeColor, strokeWidth, opacity } = useSelector((state: RootState) => state.editingAttributes);
 
   useEffect(() => {
     if (editor?.canvas) {
@@ -28,11 +28,9 @@ export default function EditorArea() {
   }, [editor?.canvas.backgroundImage]);
 
   useEffect(() => {
-    if(isPageLoading){
       // TODO: add handleThumbnailSave() when there's sufficient storage;
       handleElementsSave();
-    }
-  }, [isPageLoading]);
+  }, []);
 
   useEffect(() => {
     editor && (editor.canvas._objects.length = 0);
@@ -45,9 +43,18 @@ export default function EditorArea() {
       const nextPage = pages.find(page => page.id === nextPageId)
       const currentPage = selectedPage ? selectedPage : null;
       nextPage && dispatch(selectPageEnd(currentPage, nextPage));
-      console.log('dispatched selectPageEnd')
     }
-  }, [selectedPage?.elements]);
+  }, [isPageLoading]);
+
+  useEffect(() => {
+    if (editor?.canvas) {
+      const activeObject = editor.canvas.getActiveObject();
+      if(!activeObject){return;}
+      activeObject.set({ left: positionX || activeObject.left, top: positionY || activeObject.top });
+      activeObject.setCoords(); 
+      editor.canvas.renderAll();
+    }
+  }, [positionX, positionY]);
 
   useEffect(() => {
     editor && (editor.canvas.freeDrawingBrush.color = fillColor);
@@ -113,7 +120,6 @@ export default function EditorArea() {
         quality: 0.01
       });
       dispatch(changePageThumbnail(dataURL));
-      console.log('dispatched changePageThumbnail')
     } else {
       dispatch(changePageThumbnail(''));
     }
@@ -121,7 +127,6 @@ export default function EditorArea() {
   const handleElementsSave = () => {
     if (editor?.canvas?._objects) {
       dispatch(saveElements(toPageElementList(editor.canvas._objects, selectedPage?.elements)));
-      console.log('dispatched saveElements')
     }
   };
 

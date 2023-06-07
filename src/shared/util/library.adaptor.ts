@@ -1,8 +1,14 @@
 import { PageElement } from '../redux/models/page.model';
 import { fabric } from 'fabric';
 
-const availableTypes = ['rect', 'circle', 'triangle', 'path', 'text'];
+/**
+ *  An adaptor for fabricjs and custom-fabricjs-react-lib
+ */
 
+const availableTypes = ['rect', 'circle', 'triangle', 'path', 'text'];
+/**
+ * @description render a fabricjs object by its type with object options
+ */
 function renderCanvasObjectByType(object: fabric.IObjectOptions) {
   switch (object.type) {
     case 'rect':
@@ -23,7 +29,9 @@ function renderCanvasObjectByType(object: fabric.IObjectOptions) {
       return new fabric.Object(object);
   }
 }
-
+/**
+ * @description transform a list of fabricjs objects to a list of page elements
+ */
 export function toPageElementList(objects: fabric.Object[], oldPageElementList?: PageElement[]) {
   const pageElementList = [] as PageElement[];
   objects.forEach((element, idx) => {
@@ -42,6 +50,9 @@ export function toPageElementList(objects: fabric.Object[], oldPageElementList?:
   return pageElementList;
 }
 
+/**
+ * @description load a list of page elements to a fabricjs canvas
+ */
 export function loadCanvasElements(canvas: fabric.Canvas, pageElementList?: PageElement[]) {
   canvas?.clear();
   const canvasObjectList = [] as fabric.Object[];

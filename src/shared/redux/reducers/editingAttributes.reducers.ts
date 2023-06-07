@@ -2,6 +2,8 @@ import { EditingAttributesActionTypes } from '../actions/editingAttributes.actio
 
 
 interface State {
+  positionX?: number;
+  positionY?: number;
   fillColor: string;
   strokeWidth: number;
   strokeColor: string;
@@ -36,6 +38,12 @@ const editingAttributesReducer = (state = initialState, action: EditingAttribute
       return {
         ...state,
         opacity: action.payload
+      };
+    case 'SET_POSITION':
+      return {
+        ...state,
+        positionX: action.payload.x || state.positionX,
+        positionY: action.payload.y || state.positionY
       };
     default:
       return state;

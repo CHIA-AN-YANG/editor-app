@@ -4,7 +4,7 @@ import { DEFAULT_PAGE_NAME, Page } from '../models/page.model';
 export const CREATE_PAGE = 'CREATE_PAGE';
 export const SELECT_PAGE_START = 'SELECT_PAGE_START';
 export const SELECT_PAGE_END = 'SELECT_PAGE_END';
-export const CHANGE_PAGE_NAME = 'CHANGE_PAGE_NAME';
+export const UPDATE_PAGE_NAME = 'UPDATE_PAGE_NAME';
 export const DELETE_PAGE = 'DELETE_PAGE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const SAVE_PAGE_THUMBNAIL = 'SAVE_PAGE_THUMBNAIL';
@@ -35,9 +35,9 @@ interface DeletePageAction {
   payload: { id: string };
 }
 
-interface ChangePageNameAction {
-  type: typeof CHANGE_PAGE_NAME;
-  payload: string;
+interface UpdatePageNameAction {
+  type: typeof UPDATE_PAGE_NAME;
+  payload: { pageId: string, newName: string };
 }
 
 interface SavePageThumbnailAction {
@@ -82,9 +82,9 @@ export const deletePage = (id: string): DeletePageAction => ({
   payload: { id }
 });
 
-export const changePageName = (newName: string): ChangePageNameAction => ({
-  type: CHANGE_PAGE_NAME,
-  payload: newName
+export const updatePageName = (pageId: string, newName: string): UpdatePageNameAction => ({
+  type: UPDATE_PAGE_NAME,
+  payload: { pageId, newName }
 });
 
 export const changePageThumbnail = (newThumbnail: string): SavePageThumbnailAction => ({
@@ -98,5 +98,5 @@ export type PageActionTypes = CreatePageAction
   | SelectPageStartAction
   | SelectPageEndAction
   | DeletePageAction
-  | ChangePageNameAction
+  | UpdatePageNameAction
   | SavePageThumbnailAction

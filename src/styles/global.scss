@@ -22,6 +22,7 @@
     scrollbar-width: none;
     -ms-scroll-chaining: none;
     overscroll-behavior: none;
+    letter-spacing: 1px;
 
     ::-webkit-scrollbar {
       width: 3px;
@@ -45,8 +46,27 @@
       border-radius: 1px;
     }
 
+    input[type="number"], input[type="text"] {
+      appearance: none;
+      outline: none;
+      padding: 0.2rem;
+      border: none;
+      border-radius: var(--border-radius);
+      width: 150px;
+    }
+
+    input [type="number"] {
+      text-align: center;
+      font-family: monospace;
+    }
+
     input[type="range"]{
       filter: brightness(2) grayscale(1);
+    }
+
+    .spacer {
+      display: flex;
+      flex: 1 1 auto;
     }
   }
 }

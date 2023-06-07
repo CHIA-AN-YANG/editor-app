@@ -1,4 +1,4 @@
-import { PageActionTypes, CREATE_PAGE, SELECT_PAGE_START, SELECT_PAGE_END, DELETE_PAGE } from '@store/actions/page.actions';
+import { PageActionTypes, CREATE_PAGE, SELECT_PAGE_START, SELECT_PAGE_END, DELETE_PAGE, UPDATE_PAGE_NAME } from '@store/actions/page.actions';
 import { Page, initialPage } from '../models/page.model';
 
 interface State {
@@ -34,7 +34,19 @@ const pageReducer = (state = initialState, action: PageActionTypes): State => {
         isPageLoading: false,
         nextPageId: undefined
       };
-
+    case UPDATE_PAGE_NAME:
+      const updatedPageId = state.pages.findIndex(page => page.id === action.payload.pageId);
+      return {
+        pages: [
+          ...state.pages.slice(0, updatedPageId),
+          {
+            ...state.pages[updatedPageId],
+            name: action.payload.newName
+          },
+          ...state.pages.slice(updatedPageId + 1)
+        ],
+        isPageLoading: false
+      };
     case DELETE_PAGE:
       const remainingPageId = state.pages.findIndex(page => page.id === action.payload.id);
       return {

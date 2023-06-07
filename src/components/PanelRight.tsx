@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { RootState } from '@store/store';
 import { editElement } from '@store/actions/element.actions';
-import { setFillColor, setOpacity, setStrokeColor } from '@store/actions/editingAttributes.actions';
+import { setFillColor, setOpacity, setPosition, setStrokeColor } from '@store/actions/editingAttributes.actions';
 import styles from '@styles/editor.module.scss';
 
 enum EditorMode {
@@ -15,8 +15,8 @@ enum EditorMode {
 export default function PanelRight() {
 
   const dispatch = useDispatch();
-  const [mode, setMode] = useState(EditorMode.EDIT);
-  const {fillColor, strokeColor, opacity} = useSelector((state: RootState) => state.editingAttributes);
+  const [ mode, setMode ] = useState(EditorMode.EDIT);
+  const { positionX, positionY, fillColor, strokeColor, opacity } = useSelector((state: RootState) => state.editingAttributes);
 
   const handleElementsEdit = (payload: EditElementActionPayload) => {
     dispatch(editElement(payload));
@@ -32,6 +32,10 @@ export default function PanelRight() {
 
   const handleOpacityChange = (newOpacity: number) => {
     dispatch(setOpacity(newOpacity));
+  }
+
+  const handlePositionChange = (newPositionX?: number, newPositionY?: number) => {
+    dispatch(setPosition(newPositionX, newPositionY));
   }
 
 
@@ -123,6 +127,33 @@ export default function PanelRight() {
                 (e) => handleStrokeColorChange(e.target.value)
               }></input>
             </div>
+          </div>
+          <div className={styles.panelBodyInputFlexColumn}>
+            <div className={styles.panelBodyInputTitle}>
+              Position
+            </div>
+            <div className={styles.panelBodyInputFormGroupRow}>
+              <div className={styles.panelBodyInputTitle}>
+                X
+              </div>
+              <div className={styles.panelBodyInputContent}>
+                <input type="number" onBlur={
+                  (e) => handlePositionChange(+e.target.value, undefined )}
+                  placeholder={positionX ? positionX.toString() : ''}
+                ></input>
+              </div>
+              <div className="spacer"></div>
+              <div className={styles.panelBodyInputTitle}>
+                Y
+              </div>
+              <div className={styles.panelBodyInputContent}>
+                <input type="number" onBlur={
+                  (e) => handlePositionChange( undefined , +e.target.value)}
+                  placeholder={positionY ? positionY.toString() : ''}
+                ></input>
+              </div>
+            </div>
+
           </div>
           <div className={styles.panelBodyInputFlexColumn}>
             <div className={styles.panelBodyInputTitle}>
