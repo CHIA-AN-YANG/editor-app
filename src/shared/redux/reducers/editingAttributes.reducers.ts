@@ -8,6 +8,7 @@ interface State {
   strokeWidth: number;
   strokeColor: string;
   opacity: number;
+  dirty?: boolean;
 }
 
 const initialState: State = {
@@ -43,7 +44,13 @@ const editingAttributesReducer = (state = initialState, action: EditingAttribute
       return {
         ...state,
         positionX: action.payload.x || state.positionX,
-        positionY: action.payload.y || state.positionY
+        positionY: action.payload.y || state.positionY,
+        dirty: false
+      };
+    case 'SET_DIRTY':
+      return {
+        ...state,
+        dirty: action.payload
       };
     default:
       return state;

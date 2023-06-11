@@ -1,9 +1,9 @@
 import { EditElementActionPayload } from '../shared/redux/models/editElement.interfaces';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { RootState } from '@store/store';
 import { editElement } from '@store/actions/element.actions';
-import { setFillColor, setOpacity, setPosition, setStrokeColor } from '@store/actions/editingAttributes.actions';
+import { setAttributesDirty, setFillColor, setOpacity, setPosition, setStrokeColor } from '@store/actions/editingAttributes.actions';
 import styles from '@styles/editor.module.scss';
 
 enum EditorMode {
@@ -17,6 +17,9 @@ export default function PanelRight() {
   const dispatch = useDispatch();
   const [ mode, setMode ] = useState(EditorMode.EDIT);
   const { positionX, positionY, fillColor, strokeColor, opacity } = useSelector((state: RootState) => state.editingAttributes);
+  const [valueX, setValueX] = useState('');
+  const [valueY, setValueY] = useState('');
+
 
   const handleElementsEdit = (payload: EditElementActionPayload) => {
     dispatch(editElement(payload));
@@ -34,8 +37,19 @@ export default function PanelRight() {
     dispatch(setOpacity(newOpacity));
   }
 
+  const handleValueXChange = (e:FormEvent<HTMLInputElement>) => {
+    setValueX((e.target as HTMLInputElement).value);
+  }
+
+  const handleValueYChange = (e:FormEvent<HTMLInputElement>) => {
+    setValueY((e.target as HTMLInputElement).value);
+  }
+
   const handlePositionChange = (newPositionX?: number, newPositionY?: number) => {
     dispatch(setPosition(newPositionX, newPositionY));
+    dispatch(setAttributesDirty(true));
+    setValueX('');
+    setValueY('');
   }
 
 
@@ -140,6 +154,8 @@ export default function PanelRight() {
                 <input type="number" onBlur={
                   (e) => handlePositionChange(+e.target.value, undefined )}
                   placeholder={positionX ? positionX.toString() : ''}
+                  onChange={handleValueXChange}
+                  value = {valueX}
                 ></input>
               </div>
               <div className="spacer"></div>
@@ -150,6 +166,8 @@ export default function PanelRight() {
                 <input type="number" onBlur={
                   (e) => handlePositionChange( undefined , +e.target.value)}
                   placeholder={positionY ? positionY.toString() : ''}
+                  onChange={handleValueYChange}
+                  value = {valueY}
                 ></input>
               </div>
             </div>
@@ -186,7 +204,7 @@ export default function PanelRight() {
             Delete Element(s)
           </button>
           <button onClick={clear}>
-            Clear Canvase
+            Clear Canvas
           </button>
       </div>
     </section>

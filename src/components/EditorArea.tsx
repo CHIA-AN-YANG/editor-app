@@ -7,6 +7,7 @@ import { useFabricJSEditor, FabricJSEditor, FabricJSCanvas } from '../shared/cus
 import { loadCanvasElements, toPageElementList } from '../shared/util/library.adaptor';
 import styles from '@styles/editor.module.scss';
 import { changePageThumbnail, selectPageEnd } from '@store/actions/page.actions';
+import { setPosition } from '@store/actions/editingAttributes.actions';
 
 export default function EditorArea() {
 
@@ -17,20 +18,51 @@ export default function EditorArea() {
   const { nextPageId, pages, isPageLoading} = useSelector((state: RootState) => state.page);
   const selectedPage = useSelector((state: RootState) => state.selectedPage.page);
   const selectedElement = useSelector((state: RootState) => state.selectedPage.selectedElement);
-  const { positionX, positionY, fillColor, strokeColor, strokeWidth, opacity } = useSelector((state: RootState) => state.editingAttributes);
+  const { positionX, positionY, fillColor, strokeColor, strokeWidth, opacity, dirty } = useSelector((state: RootState) => state.editingAttributes);
 
   useEffect(() => {
     if (editor?.canvas) {
       editor.canvas.setHeight(500);
       editor.canvas.setWidth(600);
       editor.canvas.renderAll();
+
+      const selectedPositionHandler = (event: any) => {
+        if(event.selected.length >= 1){
+          const selectedElement = event.selected[0];
+          selectedElement.set({objectCaching: false})
+       dispatch(setPosition(selectedElement.left, selectedElement.top));
+        }else{
+          dispatch(setPosition(undefined, undefined));
+        }
+      }
+      const disselectHandler = () => {
+        if(positionX || positionY){
+        dispatch(setPosition(undefined, undefined));
+        }
+      };
+      editor.canvas.off('selection:created', );
+      editor.canvas.on('selection:created', selectedPositionHandler);
+      editor.canvas.off('selection:updated', );
+      editor.canvas.on('selection:updated', selectedPositionHandler);
+      editor.canvas.off('selection:cleared', )
+      editor.canvas.on('selection:cleared', disselectHandler);
     }
-  }, [editor?.canvas.backgroundImage]);
+  }, [editor?.canvas]);
+
+  useEffect(() => {
+    if (editor?.canvas._activeObject) {
+      const activeObjectPositionHandler = (e: any) => {
+        dispatch(setPosition(e.pointer.x.toFixed(0), e.pointer.y.toFixed(0)));
+      }
+      editor.canvas._activeObject.on('moving', activeObjectPositionHandler);
+      editor.canvas.off('mouseup', );
+    }
+  }, [editor?.canvas._activeObject]);
 
   useEffect(() => {
       // TODO: add handleThumbnailSave() when there's sufficient storage;
       handleElementsSave();
-  }, []);
+  }, [editor?.canvas._objects.length, selectedElement]);
 
   useEffect(() => {
     editor && (editor.canvas._objects.length = 0);
@@ -47,7 +79,7 @@ export default function EditorArea() {
   }, [isPageLoading]);
 
   useEffect(() => {
-    if (editor?.canvas) {
+    if (editor?.canvas && dirty) {
       const activeObject = editor.canvas.getActiveObject();
       if(!activeObject){return;}
       activeObject.set({ left: positionX || activeObject.left, top: positionY || activeObject.top });
@@ -72,6 +104,7 @@ export default function EditorArea() {
   useEffect(() => {
     editor && editor.setOpacity(opacity);
   }, [opacity]);
+
 
   // editing actions offered by fabricjs
   const addCircle = (editor?: FabricJSEditor) => {
@@ -168,15 +201,7 @@ export default function EditorArea() {
     <section className={styles.center}>
       <div className={styles.panelBody}>
         <div className={styles.editingArea}>
-          <div
-            style={{
-              width: "var(--editing-area-width)",
-              height: "var(--editing-area-height)",
-              backgroundColor: "white"
-            }}
-          >
             <FabricJSCanvas className="sample-canvas" onReady={onReady} />
-          </div>
         </div>
       </div>
     </section>
