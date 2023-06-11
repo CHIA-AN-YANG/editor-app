@@ -2,14 +2,14 @@ import { PageElement } from '../redux/models/page.model';
 import { fabric } from 'fabric';
 
 /**
- *  An adaptor for fabricjs and custom-fabricjs-react-lib
+ *  Adaptor functions for fabricjs and custom-fabricjs-react-lib
  */
 
 const availableTypes = ['rect', 'circle', 'triangle', 'path', 'text'];
 /**
  * @description render a fabricjs object by its type with object options
  */
-function renderCanvasObjectByType(object: fabric.IObjectOptions) {
+export function renderCanvasObjectByType(object: fabric.IObjectOptions) {
   switch (object.type) {
     case 'rect':
       return new fabric.Rect(object);

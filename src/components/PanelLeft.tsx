@@ -46,9 +46,9 @@ export default function PanelLeft() {
         <div className={styles.panelHeadTitle}>{selectedPage?.name || ''}</div>
         <div className={styles.panelHeadBtn}>
           
-          <BsFillPlusSquareFill onClick={() => handlePageCreate()}></BsFillPlusSquareFill>
+          <BsFillPlusSquareFill onClick={() => handlePageCreate()} aria-label="Add Page"></BsFillPlusSquareFill>
 
-          {selectedPage ? (<BsFillTrash3Fill onClick={() => handlePageDelete(selectedPage.id)}></BsFillTrash3Fill>) 
+          {selectedPage ? (<BsFillTrash3Fill onClick={() => handlePageDelete(selectedPage.id)} aria-label="Delete Page"></BsFillTrash3Fill>) 
           : (<BsFillTrash3Fill className={styles.inactive}></BsFillTrash3Fill>)}
 
         </div>
@@ -61,7 +61,9 @@ export default function PanelLeft() {
           return (
             <div
               key={page.id}
-              className={`${styles.pageThumbnailWrapper} ${selectedPage?.id === page.id ? styles.activeItem : ''}`}
+              role="row"
+              aria-label={`id-${page.id}, Page Name-${page.name}`}
+              className={`${styles.pageThumbnailWrapper} ${selectedPage?.id === page.id ? styles.activeItem : 'not-active'}`}
               onClick={() => handlePageSelect(page.id)}>
               <p>{idx +1}</p>
               <div>
@@ -75,11 +77,12 @@ export default function PanelLeft() {
                   <Image
                     src={page.thumbnail || ''}
                     alt={page.name}
+                    role="img" aria-label="Thumbnail of the page"
                     className={styles.pageImage}
                     height={50} width={100}
                     priority
                   ></Image>
-                ) : ( <div className={styles.emptyImage}></div> )}
+                ) : ( <div className={styles.emptyImage} role="img" aria-label="Thumbnail of the Blank page"></div> )}
               </div>
             </div>
           );})}
