@@ -87,11 +87,6 @@ export const updatePageName = (pageId: string, newName: string): UpdatePageNameA
   payload: { pageId, newName }
 });
 
-export const changePageThumbnail = (newThumbnail: string): SavePageThumbnailAction => ({
-  type: SAVE_PAGE_THUMBNAIL,
-  payload: newThumbnail
-});
-
 // Export action types
 export type PageActionTypes = CreatePageAction
   | SelectElementAction

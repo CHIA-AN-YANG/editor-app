@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFabricJSEditor, FabricJSEditor, FabricJSCanvas } from '../shared/custom-fabricjs-react-lib';
 import { loadCanvasElements, toPageElementList } from '../shared/util/library.adaptor';
 import styles from '@styles/editor.module.scss';
-import { changePageThumbnail, selectPageEnd } from '@store/actions/page.actions';
+import { selectPageEnd } from '@store/actions/page.actions';
 import { setPosition } from '@store/actions/editingAttributes.actions';
 
 export default function EditorArea() {
@@ -26,8 +26,8 @@ export default function EditorArea() {
       editor.canvas.setWidth(600);
       editor.canvas.renderAll();
 
-      const selectedPositionHandler = (event: any) => {
-        if(event.selected.length >= 1){
+      const selectedPositionHandler = (event: fabric.IEvent) => {
+        if(event.selected && event.selected?.length >= 1){
           const selectedElement = event.selected[0];
           selectedElement.set({objectCaching: false})
        dispatch(setPosition(selectedElement.left, selectedElement.top));
@@ -51,8 +51,10 @@ export default function EditorArea() {
 
   useEffect(() => {
     if (editor?.canvas._activeObject) {
-      const activeObjectPositionHandler = (e: any) => {
-        dispatch(setPosition(e.pointer.x.toFixed(0), e.pointer.y.toFixed(0)));
+      const activeObjectPositionHandler = (e: fabric.IEvent) => {
+        if(e.pointer){
+          dispatch(setPosition(+e.pointer.x.toFixed(0), +e.pointer.y.toFixed(0)));
+        }
       }
       editor.canvas._activeObject.on('moving', activeObjectPositionHandler);
       editor.canvas.off('mouseup', );
@@ -128,13 +130,8 @@ export default function EditorArea() {
       : (editor.canvas.freeDrawingBrush.width = 12);
   };
   const deletElement = (editor?: FabricJSEditor) => {
-    editor?.canvas.getActiveObject() && editor.canvas.remove(editor.canvas.getActiveObject()!);
-  };
-  const undo = (editor?: FabricJSEditor) => {
-    if (editor?.canvas && (editor.canvas._objects.length > 0)) {
-      history.push(editor.canvas._objects.pop()!);
-    }
-    editor?.canvas.renderAll();
+    const activeObject = editor?.canvas.getActiveObject();
+    activeObject && editor?.canvas.remove(activeObject);
   };
   const clear = (editor?: FabricJSEditor) => {
     if (!editor || !editor.canvas) {
@@ -144,19 +141,7 @@ export default function EditorArea() {
     history.splice(0, history.length);
     editor.canvas.renderAll();
   };
-  const handleThumbnailSave = () => {
-    if (editor?.canvas) {
-      const dataURL = editor.canvas.toDataURL({
-        multiplier: 0.16,
-        left: 0,
-        top: 0,
-        quality: 0.01
-      });
-      dispatch(changePageThumbnail(dataURL));
-    } else {
-      dispatch(changePageThumbnail(''));
-    }
-  };
+
   const handleElementsSave = () => {
     if (editor?.canvas?._objects) {
       dispatch(saveElements(toPageElementList(editor.canvas._objects, selectedPage?.elements)));
@@ -183,9 +168,6 @@ export default function EditorArea() {
           break;
         case 'DELETE_ELEMENT':
           deletElement(editor);
-          break;
-        case 'UNDO':
-          undo();
           break;
         case 'CLEAR_CANVAS':
           clear(editor);

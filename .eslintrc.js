@@ -1,9 +1,17 @@
 module.exports = {
   root: true,
-  ignorePatterns: ['projects/**/*', 'node_modules/*', 'dist/*'],
+  ignorePatterns: [
+    'projects/**/*',
+    'node_modules/*',
+    'dist/*',
+    'src/shared/custom-fabricjs-react-lib/*',
+  ],
   env: { browser: true },
   plugins: ['@typescript-eslint'],
-  extends: ['next', 'plugin:@typescript-eslint/recommended'],
+  extends: ['next/core-web-vitals', 'plugin:@typescript-eslint/recommended'],
+  rules: {
+    'react-hooks/exhaustive-deps': 'off',
+  },
   overrides: [
     {
       files: ['*.tsx, *.ts'],
@@ -40,6 +48,7 @@ module.exports = {
         ],
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/no-explicit-any': 'error',
+        'react-hooks/exhaustive-deps': 'off',
         'eol-last': ['error', 'always'],
         'max-len': ['warn', { code: 250 }],
         'no-empty': 1,

@@ -97,12 +97,6 @@ export default function PanelRight() {
     })
   }
 
-  const undo = () => {
-    handleElementsEdit({
-      editorAction: 'UNDO',
-    })
-  }
-
   const deletElement = () => {
     handleElementsEdit({
       editorAction: 'DELETE_ELEMENT'
