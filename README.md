@@ -1,34 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Editor App
+This is a simple SPA that can edit graphs, made of React and fabricjs
+
+![image](https://github.com/CHIA-AN-YANG/editor-app/assets/71560280/6e50424d-754c-4c0a-b2dc-a205ba1accf9)
+
+
+### Essential Tools
+Typescript and Next.js framework are used.
+
+yarn - ^1.22.0
+node - ^16.17.1
+
+To install yarn, please run:
+```bash
+npm install --global yarn
+yarn use classic # switch to 1.x version
+```
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+yarn     # installation
+yarn dev # run in dev environment locally
 ```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Unit Test
+```bash
+yarn test
+```
+## Linting and Formatting
+Tools used in editing mode are specified in `.vscode/setting.json`
+Primary linting tool is Eslint, with `@typescript-eslint` plugin
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Project Planning
+![image](https://github.com/CHIA-AN-YANG/editor-app/assets/71560280/733667b5-564e-4d0f-9a4d-840554c6ec2e)
