@@ -5,12 +5,14 @@ This is a simple SPA that can edit graphs, made of React and fabricjs
 
 
 ### Essential Tools
+
 Typescript and Next.js framework are used.
 
-yarn - ^1.22.0
-node - ^16.17.1
+- yarn - ^1.22.0
+- node - ^16.17.1
 
 To install yarn, please run:
+
 ```bash
 npm install --global yarn
 yarn use classic # switch to 1.x version
@@ -30,6 +32,7 @@ yarn test
 ```
 ## Linting and Formatting
 Tools used in editing mode are specified in `.vscode/setting.json`
+
 Primary linting tool is Eslint, with `@typescript-eslint` plugin
 
 ### Project Planning
